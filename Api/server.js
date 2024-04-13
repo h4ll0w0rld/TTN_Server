@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require("mysql")
+const mysql = require("mysql2")
 
 const app = express();
 const port = 3333; // Change the port number if needed
@@ -22,8 +22,8 @@ app.use(express.json());
 
 // Route to handle POST requests
 app.post('/webhook', async (req, res) => {
-  reqBody= { humidity: 10.7, temperature: 22.55 } // req.body.decoded_payload
-  
+  reqBody= req.body.decoded_payload
+
   saveHumidityData(reqBody.humidity);
 });
 
