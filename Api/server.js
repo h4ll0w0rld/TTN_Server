@@ -12,7 +12,7 @@ const db = mysql.createConnection({
 });
 
 db.connect((err) => {
-  if (err) throw err;
+  //nif (err) throw err;
   console.log('Connected to MySQL database!');
 });
 
@@ -29,7 +29,7 @@ app.post('/webhook', async (req, res) => {
 });
 
 app.get("/humidity", async(req, res) => {
-    res.send(getHumid());
+    res.send(JSON.stringify(getHumid())).status(200);
 })
 
 async function saveHumidityData(humidity) {
@@ -47,7 +47,7 @@ function getHumid() {
   const query = 'SELECT * FROM HumidSens';
 
   // Execute the query
-  connection.query(query, (err, results) => {
+  db.query(query, (err, results) => {
     if (err) {
       console.error('Error executing query:', err);
       return;
