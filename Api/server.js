@@ -22,19 +22,39 @@ app.use(express.json());
 
 // Route to handle POST requests
 app.post('/webhook', async (req, res) => {
-  reqBody= req.body.decoded_payload
+  reqBody = req.body.decoded_payload
 
-  saveHumidityData(reqBody.humidity);
+  console.log(req.body.uplink_message.decoded_payload)
+  saveHumidityData(req.body.uplink_message.decoded_payload.humidity);
 });
+
+app.get("/humidity", async(req, res) => {
+    res.send(getHumid());
+})
 
 async function saveHumidityData(humidity) {
   try {
-      const query = 'INSERT INTO HumidSens (humidity) VALUES (?)';
-      await db.execute(query, [humidity]);
-      console.log(`Saved humidity value ${humidity} to the database.`);
+    const query = 'INSERT INTO HumidSens (humidity) VALUES (?)';
+    await db.execute(query, [humidity]);
+    console.log(`Saved humidity value ${humidity} to the database.`);
   } catch (error) {
-      console.error('Error saving humidity data:', error.message);
+    console.error('Error saving humidity data:', error.message);
   }
+}
+
+function getHumid() {
+
+  const query = 'SELECT * FROM HumidSens';
+
+  // Execute the query
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      return;
+    }
+    console.log('Retrieved values from HumidSens table:', results);
+    return results
+  });
 }
 
 
