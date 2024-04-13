@@ -1,8 +1,21 @@
 const express = require('express');
-const db = require('./dbConnection');
+const mysql = require("mysql")
 
 const app = express();
 const port = 3333; // Change the port number if needed
+
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'lora',
+  password: 'your_password_here',
+  database: 'LoRa'
+});
+
+db.connect((err) => {
+  if (err) throw err;
+  console.log('Connected to MySQL database!');
+});
+
 
 // Middleware to parse JSON bodies
 app.use(express.json());
