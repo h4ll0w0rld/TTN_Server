@@ -29,7 +29,7 @@ app.post('/webhook', async (req, res) => {
   const moistSens = {
     id: req.body.uplink_message.decoded_payload.id,
     humidity: req.body.uplink_message.decoded_payload.humidity,
-    time: req.body.uplink_message.settings.time
+    time: new Date(req.body.uplink_message.settings.time) 
   }
   console.log("moist: ", moistSens)
   saveHumidityData(moistSens.id, moistSens.humidity, moistSens.time);
@@ -41,10 +41,12 @@ app.get("/humidity", async(req, res) => {
 })
 
 async function saveHumidityData(id, humidity, time) {
+  const timeString = time.toISOString().slice(0, 19).replace('T', ' '); // Convert Date to MySQL-compatible string
+
   try {
     const query = 'INSERT INTO HumidSens (id, humidity, time) VALUES (?)';
     await db.execute(query, [id, humidity, time]);
-    console.log(`Saved humidity value ${humidity} to the database with id: ${id} collected ${time}.`);
+    console.log(`Saved humidity value ${humidity} to the database with id: ${id} collected ${timeString}.`);
   } catch (error) {
     console.error('Error saving humidity data:', error.message);
   }
