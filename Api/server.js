@@ -27,26 +27,26 @@ app.post('/webhook', async (req, res) => {
   console.log(req.body.uplink_message.decoded_payload)
 
   const moistSens = {
-    id: req.body.uplink_message.decoded_payload.id,
+    devId: req.body.uplink_message.decoded_payload.id,
     humidity: req.body.uplink_message.decoded_payload.humidity,
     time: new Date(req.body.uplink_message.settings.time) 
   }
   console.log("moist: ", moistSens)
-  saveHumidityData(moistSens.id, moistSens.humidity, moistSens.time);
+  saveHumidityData(moistSens.devId, moistSens.humidity, moistSens.time);
   res.status(200).json({ message: 'Success!' });
 });
 
-app.get("/humidity", async(req, res) => {
-    res.send(JSON.stringify(getHumid())).status(200);
+app.get("/humidity", async(_req, _res) => {
+    _res.send(JSON.stringify(getHumid())).status(200);
 })
 
-async function saveHumidityData(id, humidity, time) {
-  const timeString = time.toISOString().slice(0, 19).replace('T', ' '); // Convert Date to MySQL-compatible string
+async function saveHumidityData(_id, _humidity, _time) {
+  const timeString = _time.toISOString().slice(0, 19).replace('T', ' '); // Convert Date to MySQL-compatible string
 
   try {
-    const query = 'INSERT INTO HumidSens (id, humidity, time) VALUES (?)';
-    await db.execute(query, [id, humidity, time]);
-    console.log(`Saved humidity value ${humidity} to the database with id: ${id} collected ${timeString}.`);
+    const query = 'INSERT INTO HumidSens (devId, humidity, time) VALUES (?)';
+    await db.execute(query, [_id, _humidity, _time]);
+    console.log(`Saved humidity value ${_humidity} to the database with id: ${_id} collected ${timeString}.`);
   } catch (error) {
     console.error('Error saving humidity data:', error.message);
   }
