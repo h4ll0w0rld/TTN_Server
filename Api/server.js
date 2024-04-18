@@ -26,7 +26,7 @@ app.post('/webhook', async (req, res) => {
 
   console.log(req.body.uplink_message.decoded_payload)
   saveHumidityData(req.body.uplink_message.decoded_payload.humidity);
-  res.send.status(200)
+  res.status(200).json({ message: 'Success!' });
 });
 
 app.get("/humidity", async(req, res) => {
