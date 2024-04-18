@@ -26,6 +26,7 @@ app.post('/webhook', async (req, res) => {
 
   console.log(req.body.uplink_message.decoded_payload)
   saveHumidityData(req.body.uplink_message.decoded_payload.humidity);
+  res.send.status(200)
 });
 
 app.get("/humidity", async(req, res) => {
@@ -42,7 +43,7 @@ async function saveHumidityData(humidity) {
   }
 }
 
-function getHumid() {
+async function getHumid() {
 
   const query = 'SELECT * FROM HumidSens';
 
@@ -50,10 +51,10 @@ function getHumid() {
   db.query(query, (err, results) => {
     if (err) {
       console.error('Error executing query:', err);
-      return;
+      return "bababababa";
     }
     console.log('Retrieved values from HumidSens table:', results);
-    return results
+    return "Hohohohohohoho"
   });
 }
 
