@@ -44,7 +44,7 @@ async function saveHumidityData(_id, _humidity, _time) {
  
 
   try {
-    const query = 'INSERT INTO HumidSens (devId, humidity, time) VALUES (?)';
+    const query = 'INSERT INTO HumidSens (devId, humidity, Date) VALUES (?)';
     await db.execute(query, [_id, _humidity, _time]);
     console.log(`Saved humidity value ${_humidity} to the database with id: ${_id} collected ${time.toString()}.`);
   } catch (error) {
