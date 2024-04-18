@@ -41,12 +41,12 @@ app.get("/humidity", async(_req, _res) => {
 })
 
 async function saveHumidityData(_id, _humidity, _time) {
-  const timeString = _time.toISOString().slice(0, 19).replace('T', ' '); // Convert Date to MySQL-compatible string
+ 
 
   try {
     const query = 'INSERT INTO HumidSens (devId, humidity, time) VALUES (?)';
     await db.execute(query, [_id, _humidity, _time]);
-    console.log(`Saved humidity value ${_humidity} to the database with id: ${_id} collected ${timeString}.`);
+    console.log(`Saved humidity value ${_humidity} to the database with id: ${_id} collected ${time.toString()}.`);
   } catch (error) {
     console.error('Error saving humidity data:', error.message);
   }
