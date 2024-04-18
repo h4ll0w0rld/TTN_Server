@@ -25,7 +25,14 @@ app.post('/webhook', async (req, res) => {
   reqBody = req.body.decoded_payload
 
   console.log(req.body.uplink_message.decoded_payload)
-  saveHumidityData(req.body.uplink_message.decoded_payload.humidity);
+
+  const moistSens = {
+    id: req.body.uplink_message.decoded_payload.id,
+    humidity: req.body.uplink_message.decoded_payload.humidity,
+    time: req.body.uplink_message.settings.time
+  }
+
+  saveHumidityData(moistSens.id, moistSens.humidity, moistSens.time);
   res.status(200).json({ message: 'Success!' });
 });
 
@@ -33,11 +40,11 @@ app.get("/humidity", async(req, res) => {
     res.send(JSON.stringify(getHumid())).status(200);
 })
 
-async function saveHumidityData(humidity) {
+async function saveHumidityData(id, humidity, time) {
   try {
-    const query = 'INSERT INTO HumidSens (humidity) VALUES (?)';
-    await db.execute(query, [humidity]);
-    console.log(`Saved humidity value ${humidity} to the database.`);
+    const query = 'INSERT INTO HumidSens (id, humidity, time) VALUES (?)';
+    await db.execute(query, [id, humidity, time]);
+    console.log(`Saved humidity value ${humidity} to the database with id: ${id} collected ${time}.`);
   } catch (error) {
     console.error('Error saving humidity data:', error.message);
   }
