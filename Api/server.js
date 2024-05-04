@@ -1,5 +1,6 @@
 const express = require('express');
 const mysql = require("mysql2")
+const cors = require('cors');
 
 const app = express();
 const port = 3333; // Change the port number if needed
@@ -19,6 +20,9 @@ db.connect((err) => {
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+// Use CORS middleware
+app.use(cors());
 
 // Route to handle POST requests
 app.post('/webhook', async (req, res) => {
