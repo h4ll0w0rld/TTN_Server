@@ -41,7 +41,14 @@ app.post('/webhook', async (req, res) => {
 });
 
 app.get("/humidity", async(_req, _res) => {
-    _res.send(JSON.stringify(getHumid())).status(200);
+  try {
+    const humidData = await getHumid();
+    _res.status(200).send(JSON.stringify(humidData));
+  } catch (error) {
+    console.error('Error getting humidity data:', error);
+    _res.status(500).send('Internal Server Error');
+  }
+    //_res.send(JSON.stringify(getHumid())).status(200);
 })
 
 async function saveHumidityData(_id, _humidity, _time) {
@@ -57,18 +64,32 @@ async function saveHumidityData(_id, _humidity, _time) {
 }
 
 async function getHumid() {
-
-  const query = 'SELECT * FROM HumidSens';
-
-  // Execute the query
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error('Error executing query:', err);
-      return "bababababa";
-    }
-    console.log('Retrieved values from HumidSens table:', results);
-    return "Hohohohohohoho"
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM HumidSens';
+    
+    // Execute the query
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err);
+        reject(err);
+      } else {
+        console.log('Retrieved values from HumidSens table:', results);
+        resolve(results);
+      }
+    });
   });
+
+  // const query = 'SELECT * FROM HumidSens';
+
+  // // Execute the query
+  // db.query(query, (err, results) => {
+  //   if (err) {
+  //     console.error('Error executing query:', err);
+  //     return "bababababa";
+  //   }
+  //   console.log('Retrieved values from HumidSens table:', results);
+  //   return results
+  // });
 }
 
 
