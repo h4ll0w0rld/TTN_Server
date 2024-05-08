@@ -26,6 +26,7 @@ db.connect((err) => {
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(bodyParser.json());
 
 // Use CORS middleware
 app.use(cors());
