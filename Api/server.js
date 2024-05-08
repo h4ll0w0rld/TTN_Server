@@ -36,48 +36,34 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Register user
 app.post('/register', async (req, res) => {
+  const { username, password } = req.body
   try {
-    // Extract username and password from request body
-    const { username, password } = req.body;
-    
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Get a connection from the pool
-    const connection = await pool.getConnection();
-
-    // Insert the new user into the database
-    await connection.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword]);
-
-    // Release the connection
-    connection.release();
-
-    // Send a success response
-    res.status(201).json({ message: 'User registered successfully' });
+    const query = 'INSERT INTO users (username, password) VALUES (?, ?, ?)';
+    await db.execute(query, [username, password]);
+    res.send("").status(200);
+    console.log(`Saved User ${username} to the database`);
   } catch (error) {
-    // If an error occurs, log it and send an internal server error response
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error('Error saving User:', error.message);
   }
 });
 // Login user
 app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        const [user] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid username or password' });
-        }
-        const isValidPassword = await bcrypt.compare(password, user.password);
-        if (!isValidPassword) {
-            return res.status(401).json({ message: 'Invalid username or password' });
-        }
-        const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
-        res.json({ token });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+  const { username, password } = req.body;
+  try {
+    const [user] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid username or password' });
     }
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+    const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+    res.json({ token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 // Protected route
@@ -95,14 +81,14 @@ app.post('/webhook', async (req, res) => {
   const moistSens = {
     devId: req.body.uplink_message.decoded_payload.id,
     humidity: req.body.uplink_message.decoded_payload.humidity,
-    time: new Date(req.body.uplink_message.settings.time) 
+    time: new Date(req.body.uplink_message.settings.time)
   }
   console.log("moist: ", moistSens)
   saveHumidityData(moistSens.devId, moistSens.humidity, moistSens.time);
   res.status(200).json({ message: 'Success!' });
 });
 
-app.get("/humidity", async(_req, _res) => {
+app.get("/humidity", async (_req, _res) => {
   try {
     const humidData = await getHumid();
     _res.status(200).send(JSON.stringify(humidData));
@@ -110,11 +96,11 @@ app.get("/humidity", async(_req, _res) => {
     console.error('Error getting humidity data:', error);
     _res.status(500).send('Internal Server Error');
   }
-    //_res.send(JSON.stringify(getHumid())).status(200);
+  //_res.send(JSON.stringify(getHumid())).status(200);
 })
 
 async function saveHumidityData(_id, _humidity, _time) {
- 
+
 
   try {
     const query = 'INSERT INTO HumidSens (devId, humidity, Date) VALUES (?, ?, ?)';
@@ -128,7 +114,7 @@ async function saveHumidityData(_id, _humidity, _time) {
 async function getHumid() {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM HumidSens';
-    
+
     // Execute the query
     db.query(query, (err, results) => {
       if (err) {
@@ -141,7 +127,7 @@ async function getHumid() {
     });
   });
 
-  
+
 }
 
 
