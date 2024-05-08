@@ -57,17 +57,25 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   console.log("Tryy", username)
   try {
+
     const [user] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
     console.log("user found!!!", user)
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+    try {
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        return res.status(401).json({ message: 'Invalid username or password' });
+      }
+      const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+      res.json({ token });
+    } catch (err) {
+      console.log("Wrong credentials", err)
     }
-    const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
-    res.json({ token });
+   
+
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
