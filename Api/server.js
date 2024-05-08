@@ -62,10 +62,10 @@ app.post('/login', async (req, res) => {
     db.query(query, (err, results) => {
       if (err) {
         console.error('Error executing query:', err);
-        reject(err);
+        //reject(err);
       } else {
         console.log('Retrieved values from HumidSens table:', results);
-        resolve(results);
+        //resolve(results);
         console.log(results, "REsuuults")
       }
     });
