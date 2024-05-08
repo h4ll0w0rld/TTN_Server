@@ -32,23 +32,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Register user
 app.post('/register', async (req, res) => {
-  // Extract username and password from the request body
   const { username, password } = req.body;
+  console.log(req.body); // Add this line to log the request body
+  const hashedPassword = await bcrypt.hash(password, 10);
   
-  // Log the request body for debugging purposes
-  console.log(req.body);
-
   try {
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    // Insert the new user into the database
-    await db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword]);
-    
-    // Send a success response
+    const connection = await pool.getConnection();
+    await connection.query('INSERT INTO user (username, password) VALUES (?, ?)', [username, hashedPassword]);
+    connection.release();
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    // If an error occurs, log it and send an internal server error response
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
