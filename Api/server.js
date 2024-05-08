@@ -1,6 +1,10 @@
 const express = require('express');
 const mysql = require("mysql2")
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { authenticateUser } = require('./middleware/authenticate');
 
 const app = express();
 const port = 3333; // Change the port number if needed
@@ -17,12 +21,53 @@ db.connect((err) => {
   console.log('Connected to MySQL database!');
 });
 
-
 // Middleware to parse JSON bodies
 app.use(express.json());
 
 // Use CORS middleware
 app.use(cors());
+
+// Middleware for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Register user
+app.post('/register', async (req, res) => {
+    const { username, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword]);
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+// Login user
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const [user] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid username or password' });
+        }
+        const isValidPassword = await bcrypt.compare(password, user.password);
+        if (!isValidPassword) {
+            return res.status(401).json({ message: 'Invalid username or password' });
+        }
+        const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+        res.json({ token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+// Protected route
+app.get('/profile', authenticateUser, (req, res) => {
+    // Access user information from req.user
+    res.json(req.user);
+});
 
 // Route to handle POST requests
 app.post('/webhook', async (req, res) => {
@@ -79,17 +124,7 @@ async function getHumid() {
     });
   });
 
-  // const query = 'SELECT * FROM HumidSens';
-
-  // // Execute the query
-  // db.query(query, (err, results) => {
-  //   if (err) {
-  //     console.error('Error executing query:', err);
-  //     return "bababababa";
-  //   }
-  //   console.log('Retrieved values from HumidSens table:', results);
-  //   return results
-  // });
+  
 }
 
 
