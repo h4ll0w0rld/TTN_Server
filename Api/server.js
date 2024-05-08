@@ -37,14 +37,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Register user
 app.post('/register', async (req, res) => {
   const { username, password } = req.body
-  try {
-    const query = 'INSERT INTO users (username, password) VALUES (?, ?, ?)';
-    await db.execute(query, [username, password]);
-    res.send("").status(200);
-    console.log(`Saved User ${username} to the database`);
-  } catch (error) {
-    console.error('Error saving User:', error.message);
+  try{
+    try {
+      const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
+      await db.execute(query, [username, password]);
+      res.send("").status(200);
+      console.log(`Saved User ${username} to the database`);
+    } catch (error) {
+      console.error('Error saving User:', error.message);
+    }
+  } catch (error){
+    console.log("Error with Hashing Password", error)
   }
+
 });
 // Login user
 app.post('/login', async (req, res) => {
