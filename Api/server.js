@@ -32,16 +32,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Register user
 app.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    try {
-        await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword]);
-        res.status(201).json({ message: 'User registered successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
+  const { username, email, password } = req.body;
+  console.log(req.body); // Add this line to log the request body
+  const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+      await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword]);
+      res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
+
 
 // Login user
 app.post('/login', async (req, res) => {
