@@ -53,6 +53,7 @@ app.post('/register', async (req, res) => {
 });
 // Login user
 app.post('/login', async (req, res) => {
+  console.log(req.body)
   const { username, password } = req.body;
   console.log("Tryy")
   try {
