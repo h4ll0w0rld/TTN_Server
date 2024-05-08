@@ -59,7 +59,7 @@ app.post('/login', async (req, res) => {
   try {
     const query = 'SELECT * FROM users'
     console.log("Tryy", username)
-    const users = await db.execute(query)
+    const [users] = await db.execute(query)
     const user = users.find(user => user.username === username);
     
     console.log("user found!!!", user)
