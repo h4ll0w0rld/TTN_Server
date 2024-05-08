@@ -13,7 +13,10 @@ const db = mysql.createConnection({
   host: 'localhost',
   user: 'lora',
   password: 'your_password_here',
-  database: 'LoRa'
+  database: 'LoRa',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 db.connect((err) => {
@@ -32,21 +35,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Register user
 app.post('/register', async (req, res) => {
-  const { username, password } = req.body;
-  console.log(username, password); // Add this line to log the request body
-  const hashedPassword = await bcrypt.hash(password, 10);
-  console.log(hashedPassword)
   try {
-   
-    await db.query('INSERT INTO user (username, password) VALUES (?, ?)', [username, hashedPassword]);
+    // Extract username and password from request body
+    const { username, password } = req.body;
+    
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Get a connection from the pool
+    const connection = await pool.getConnection();
+
+    // Insert the new user into the database
+    await connection.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword]);
+
+    // Release the connection
     connection.release();
+
+    // Send a success response
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
+    // If an error occurs, log it and send an internal server error response
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
-
 // Login user
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
