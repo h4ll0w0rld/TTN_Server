@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { authenticateUser } = require('./middleware/authenticate');
+//const { authenticateUser } = require('./middleware/authenticate');
 
 const app = express();
 const port = 3333; // Change the port number if needed
@@ -64,10 +64,10 @@ app.post('/login', async (req, res) => {
 });
 
 // Protected route
-app.get('/profile', authenticateUser, (req, res) => {
-    // Access user information from req.user
-    res.json(req.user);
-});
+// app.get('/profile', authenticateUser, (req, res) => {
+//     // Access user information from req.user
+//     res.json(req.user);
+// });
 
 // Route to handle POST requests
 app.post('/webhook', async (req, res) => {
