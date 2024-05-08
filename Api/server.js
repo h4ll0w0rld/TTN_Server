@@ -55,9 +55,10 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   console.log(req.body)
   const { username, password } = req.body;
-  console.log("Tryy", username)
+ 
   try {
     const query = 'SELECT * FROM users WHERE username = ?'
+    console.log("Tryy", username)
     const [user] = await db.execute(query, [username])
     console.log("user found!!!", user)
     if (!user) {
