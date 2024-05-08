@@ -55,13 +55,12 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   console.log(req.body)
   const { username, password } = req.body;
-  ueser = db.users.findOne({ where: { username: username } })
-  console.log(ueser,"USER")
+
   try {
     const query = 'SELECT * FROM users'
     console.log("Tryy", username)
     const user = await db.execute(query)
-
+    
     console.log("user found!!!", user)
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
