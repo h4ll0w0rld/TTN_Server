@@ -57,10 +57,11 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const query = 'SELECT * FROM users WHERE username = ?'
+    const query = 'SELECT * FROM users'
     console.log("Tryy", username)
-    const user = await db.execute(query, username)
-
+    const users = await db.execute(query, username)
+    const user = users.find(user => user.username === username);
+    
     console.log("user found!!!", user)
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
