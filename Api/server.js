@@ -68,9 +68,12 @@ app.post('/login', async (req, res) => {
         //resolve(results);
         console.log(results, "REsuuults")
         user = results.find(user => user.username === username);
+
+        if (user.length > 1)
+          user = user[0]
         console.log(user, "Filterd user")
         if (!user) {
-          console.log("no user found", )
+          console.log("no user found",)
           return res.status(401).json({ message: 'Invalid username or password' });
         }
         try {
@@ -84,14 +87,14 @@ app.post('/login', async (req, res) => {
         } catch (err) {
           console.log("Wrong credentials", err)
         }
-       
+
       }
     });
     //const user = users.find(user => user.username === username);
-    
+
     console.log("user found!!!", users)
-   
-   
+
+
 
 
   } catch (error) {
