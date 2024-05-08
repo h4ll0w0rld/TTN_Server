@@ -59,7 +59,16 @@ app.post('/login', async (req, res) => {
   try {
     const query = 'SELECT * FROM users'
     console.log("Tryy", username)
-    const users = await db.execute(query)
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err);
+        reject(err);
+      } else {
+        console.log('Retrieved values from HumidSens table:', results);
+        resolve(results);
+        console.log(results, "REsuuults")
+      }
+    });
     //const user = users.find(user => user.username === username);
     
     console.log("user found!!!", users)
