@@ -67,7 +67,7 @@ app.post('/login', async (req, res) => {
         console.log('Retrieved values from HumidSens table:', results);
         //resolve(results);
         console.log(results, "REsuuults")
-        user = results.find(user => user.username === usernameToFind);
+        user = results.find(user => user.username === username);
         try {
           const isValidPassword = await bcrypt.compare(password, user.password);
           if (!isValidPassword) {
