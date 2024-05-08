@@ -68,12 +68,15 @@ app.post('/login', async (req, res) => {
         //resolve(results);
         console.log(results, "REsuuults")
         user = results.find(user => user.username === username);
+        console.log(user, "Filterd user")
         if (!user) {
+          console.log("no user found", )
           return res.status(401).json({ message: 'Invalid username or password' });
         }
         try {
           const isValidPassword = await bcrypt.compare(password, user.password);
           if (!isValidPassword) {
+            console.log("Falsches PW")
             return res.status(401).json({ message: 'Invalid username or password' });
           }
           const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
