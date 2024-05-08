@@ -33,9 +33,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Register user
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body); // Add this line to log the request body
+  console.log(username, password); // Add this line to log the request body
   const hashedPassword = await bcrypt.hash(password, 10);
-  
+  console.log(hashedPassword)
   try {
    
     await db.query('INSERT INTO user (username, password) VALUES (?, ?)', [username, hashedPassword]);
