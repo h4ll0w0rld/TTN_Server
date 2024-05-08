@@ -59,7 +59,7 @@ app.post('/login', async (req, res) => {
   try {
     const query = 'SELECT * FROM users'
     console.log("Tryy", username)
-    db.query(query, (err, results) => {
+    db.query(query, async (err, results) => {
       if (err) {
         console.error('Error executing query:', err);
         //reject(err);
@@ -67,6 +67,18 @@ app.post('/login', async (req, res) => {
         console.log('Retrieved values from HumidSens table:', results);
         //resolve(results);
         console.log(results, "REsuuults")
+        user = results.find(user => user.username === usernameToFind);
+        try {
+          const isValidPassword = await bcrypt.compare(password, user.password);
+          if (!isValidPassword) {
+            return res.status(401).json({ message: 'Invalid username or password' });
+          }
+          const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+          res.json({ token });
+        } catch (err) {
+          console.log("Wrong credentials", err)
+        }
+       
       }
     });
     //const user = users.find(user => user.username === username);
@@ -74,16 +86,6 @@ app.post('/login', async (req, res) => {
     console.log("user found!!!", users)
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
-    }
-    try {
-      const isValidPassword = await bcrypt.compare(password, user.password);
-      if (!isValidPassword) {
-        return res.status(401).json({ message: 'Invalid username or password' });
-      }
-      const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
-      res.json({ token });
-    } catch (err) {
-      console.log("Wrong credentials", err)
     }
    
 
