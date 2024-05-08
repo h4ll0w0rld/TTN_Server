@@ -68,6 +68,9 @@ app.post('/login', async (req, res) => {
         //resolve(results);
         console.log(results, "REsuuults")
         user = results.find(user => user.username === username);
+        if (!user) {
+          return res.status(401).json({ message: 'Invalid username or password' });
+        }
         try {
           const isValidPassword = await bcrypt.compare(password, user.password);
           if (!isValidPassword) {
@@ -84,9 +87,7 @@ app.post('/login', async (req, res) => {
     //const user = users.find(user => user.username === username);
     
     console.log("user found!!!", users)
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid username or password' });
-    }
+   
    
 
 
