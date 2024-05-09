@@ -39,22 +39,20 @@ app.post('/register', async (req, res) => {
   const { username, password } = req.body
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    try {
 
-      if (await userExists(username)) {
-        console.log("user exists")
-        return res.send("username already used").status(187)
 
-      } else {
-        const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
-        db.execute(query, [username, hashedPassword]);
-        res.send("User crated").status(200);
-        console.log(`Saved User ${username} to the database`);
-      }
+    if (await userExists(username)) {
+      console.log("user exists")
+      return res.send("username already used").status(187)
 
-    } catch (error) {
-      console.error('Error saving User:', error.message);
+    } else {
+      const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
+      db.execute(query, [username, hashedPassword]);
+      res.send("User crated").status(200);
+      console.log(`Saved User ${username} to the database`);
     }
+
+
   } catch (error) {
     console.log("Error with Hashing Password", error)
   }
@@ -105,9 +103,9 @@ async function getUsers() {
 
 async function userExists(_username) {
   const user = await getUserByName(_username)
- 
+
   if (user) {
- 
+
     return true;
   }
 
