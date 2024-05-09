@@ -43,7 +43,7 @@ app.post('/register', async (req, res) => {
 
       if (await userExists(username)) {
         console.log("user exists")
-        return res.send("username already used")
+        return res.send("username already used").status(187)
 
       } else {
         const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
@@ -105,19 +105,18 @@ async function getUsers() {
 
 async function userExists(_username) {
   const user = await getUserByName(_username)
-  console.log("I am here with : ", user)
+ 
   if (user) {
-    console.log("get User", user)
+ 
     return true;
   }
 
-  console.log("ELSE", user)
   return false
 }
 
 async function getUserByName(_username) {
   const users = await getUsers();
-  if (users == null) {
+  if (!users) {
     console.log("No User found");
     return null;
   } else {
