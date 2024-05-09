@@ -105,7 +105,9 @@ async function getUsers() {
 
 async function userExists(_username) {
   const user = getUserByName(_username)
-  if (user) console.log("get User", user)
+  if (user != undefined){
+    console.log("get User", user)
+  } 
   else {
     console.log("ELSE", user)
   }
