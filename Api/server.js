@@ -41,7 +41,7 @@ app.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
       console.log("user exists: ", await userExists())
-      if (await userExists()) {
+      if (await userExists(username)) {
         console.log("user exists")
         return res.send("username already used")
 
