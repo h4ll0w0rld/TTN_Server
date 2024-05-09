@@ -104,7 +104,7 @@ async function getUsers() {
 }
 
 async function userExists(_username) {
-  const user = getUserByName(_username)
+  const user = await getUserByName(_username)
   console.log("I am here with : ", user)
   if (user != undefined) {
     console.log("get User", user)
