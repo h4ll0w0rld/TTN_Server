@@ -39,7 +39,7 @@ app.post('/register', async (req, res) => {
   const { username, password } = req.body
   try {
     try {
-      if (userExists()) {
+      if (await userExists()) {
         console.log("user exists")
         return res.send("username already used")
 
@@ -83,37 +83,38 @@ app.post('/login', async (req, res) => {
 
 
 
-function getUsers() {
-
-  const query = 'SELECT * FROM users'
-  db.query(query, async (err, results) => {
-    if (err) console.error('Error executing query:', err);
-    else {
-      console.log("retrived Users", results)
-      return results;
-    }
-
+async function getUsers() {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM users';
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err);
+        reject(err);
+      } else {
+        console.log("retrieved Users", results);
+        resolve(results);
+      }
+    });
   });
-  return
-
 }
 
-function userExists(_username) {
-  users = getUsers()
+async function userExists(_username) {
+  const users = await getUsers();
   if (!Array.isArray(users)) {
     return false;
   }
-  return getUsers().some(user => user.username === _username);
-
+  return users.some(user => user.username === _username);
 }
 
-function getUserByName(_username) {
-  users = getUsers();
-  if (!users) console.log("No User found")
-  else {
-    user = users.find(user => user.username === _username);
-    console.log("user found: ", user)
-    return user
+async function getUserByName(_username) {
+  const users = await getUsers();
+  if (!users) {
+    console.log("No User found");
+    return null;
+  } else {
+    const user = users.find(user => user.username === _username);
+    console.log("user found: ", user);
+    return user;
   }
 }
 
