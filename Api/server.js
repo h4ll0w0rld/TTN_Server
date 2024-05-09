@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { authenticateToken } = require('../middleware/jwt-middleware');
 //const { authenticateUser } = require('./middleware/authenticate');
 
 const app = express();
@@ -146,7 +147,7 @@ app.post('/webhook', async (req, res) => {
   res.status(200).json({ message: 'Success!' });
 });
 
-app.get("/humidity", async (_req, _res) => {
+app.get("/humidity", authenticateToken ,async (_req, _res) => {
   try {
     const humidData = await getHumid();
     _res.status(200).send(JSON.stringify(humidData));
