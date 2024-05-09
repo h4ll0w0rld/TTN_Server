@@ -117,7 +117,7 @@ async function userExists(_username) {
 
 async function getUserByName(_username) {
   const users = await getUsers();
-  if (!users) {
+  if (users == null) {
     console.log("No User found");
     return null;
   } else {
