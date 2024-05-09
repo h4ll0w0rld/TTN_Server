@@ -100,7 +100,8 @@ function getUsers() {
 
 function userExists(_username) {
    users = getUsers()
-   if (!Array.isArray(results)) {
+   if (!Array.isArray(users)) {
+    return false;
    }
    return getUsers().some(user => user.username === _username);
 
