@@ -39,11 +39,11 @@ app.post('/register', async (req, res) => {
   const { username, password } = req.body
   try {
     try {
-      if (userExists()){
+      if (userExists()) {
         console.log("user exists")
         return res.send("username already used")
-       
-      } 
+
+      }
       const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
       await db.execute(query, [username, password]);
       res.send("User crated").status(200);
@@ -64,7 +64,7 @@ app.post('/login', async (req, res) => {
 
   //resolve(results);
   user = getUserByName(username);
-  if(!user) return res.status(401).json({ message: 'Invalid username or password' });
+  if (!user) return res.status(401).json({ message: 'Invalid username or password' });
 
   try {
     const isValidPassword = await bcrypt.compare(password, user.password);
@@ -99,19 +99,22 @@ function getUsers() {
 }
 
 function userExists(_username) {
-   users = getUsers()
-   if (!Array.isArray(users)) {
+  users = getUsers()
+  if (!Array.isArray(users)) {
     return false;
-   }
-   return getUsers().some(user => user.username === _username);
+  }
+  return getUsers().some(user => user.username === _username);
 
 }
 
-function getUserByName(_username){
+function getUserByName(_username) {
   users = getUsers();
   if (!users) console.log("No User found")
-  else return users.find(user => user.username === _username);
-
+  else {
+    user = users.find(user => user.username === _username);
+    console.log("user found: ", user)
+    return user
+  }
 }
 
 // Protected route
