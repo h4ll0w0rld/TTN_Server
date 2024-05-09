@@ -85,7 +85,7 @@ function getUsers() {
   db.query(query, async (err, results) => {
     if (err) console.error('Error executing query:', err);
     else {
-
+      console.log("retrived Users")
       return results;
     }
 
