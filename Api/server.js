@@ -45,13 +45,13 @@ app.post('/register', async (req, res) => {
         console.log("user exists")
         return res.send("username already used")
 
-      }else{
+      } else {
         const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
         db.execute(query, [username, hashedPassword]);
         res.send("User crated").status(200);
         console.log(`Saved User ${username} to the database`);
       }
-     
+
     } catch (error) {
       console.error('Error saving User:', error.message);
     }
@@ -67,7 +67,7 @@ app.post('/login', async (req, res) => {
 
 
   //resolve(results);
-  
+
   user = getUserByName(username);
   if (!user) return res.status(401).json({ message: 'Invalid username or password' });
 
@@ -104,11 +104,11 @@ async function getUsers() {
 }
 
 async function userExists(_username) {
-  const users = await getUsers();
-  if (!Array.isArray(users)) {
-    return false;
+  const user = getUserByName(_username)
+  if (user) console.log("get User", user)
+  else {
+    console.log("ELSE", user)
   }
-  return users.some(user => user.username === _username);
 }
 
 async function getUserByName(_username) {
