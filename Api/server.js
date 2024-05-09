@@ -95,7 +95,7 @@ function getUsers() {
 }
 
 function userExists(_username) {
-   return users.some(user => user.username === _username);
+   return users.find(user => user.username === _username);
 
 }
 
