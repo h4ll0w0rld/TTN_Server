@@ -43,7 +43,7 @@ app.post('/register', async (req, res) => {
 
     if (await userExists(username)) {
       console.log("user exists")
-      return res.send("username already used").status(187)
+      return res.send("username already used").status(301)
 
     } else {
       const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
