@@ -38,16 +38,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/register', async (req, res) => {
   const { username, password } = req.body
   try {
+    const hashedPassword = await bcrypt.hash(password, 10);
     try {
       if (await userExists()) {
         console.log("user exists")
         return res.send("username already used")
 
+      }else{
+        const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
+        db.execute(query, [username, hashedPassword]);
+        res.send("User crated").status(200);
+        console.log(`Saved User ${username} to the database`);
       }
-      const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
-      await db.execute(query, [username, password]);
-      res.send("User crated").status(200);
-      console.log(`Saved User ${username} to the database`);
+     
     } catch (error) {
       console.error('Error saving User:', error.message);
     }
@@ -63,6 +66,7 @@ app.post('/login', async (req, res) => {
 
 
   //resolve(results);
+  
   user = getUserByName(username);
   if (!user) return res.status(401).json({ message: 'Invalid username or password' });
 
