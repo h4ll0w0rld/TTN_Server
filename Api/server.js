@@ -99,8 +99,10 @@ function getUsers() {
 }
 
 function userExists(_username) {
-
-   return getUsers().find(user => user.username === _username);
+   users = getUsers()
+   if (!Array.isArray(results)) {
+   }
+   return getUsers().some(user => user.username === _username);
 
 }
 
