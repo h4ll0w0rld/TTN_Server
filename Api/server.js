@@ -39,6 +39,7 @@ app.post('/register', async (req, res) => {
   const { username, password } = req.body
   try {
     try {
+      if (userExists()) res.send("username already used")
       const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
       await db.execute(query, [username, password]);
       res.send("User crated").status(200);
@@ -53,52 +54,59 @@ app.post('/register', async (req, res) => {
 });
 // Login user
 app.post('/login', async (req, res) => {
-  console.log(req.body)
+
   const { username, password } = req.body;
 
+
+  //resolve(results);
+  user = getUserByName(username);
+  if(!user) return res.status(401).json({ message: 'Invalid username or password' });
+
   try {
-    const query = 'SELECT * FROM users'
-    console.log("Tryy", username)
-    db.query(query, async (err, results) => {
-      if (err) {
-        console.error('Error executing query:', err);
-        //reject(err);
-      } else {
-        console.log('Retrieved values from HumidSens table:', results);
-        //resolve(results);
-        console.log(results, "REsuuults")
-        user = results.find(user => user.username === username);
-
-        if (user.length > 1)
-          user = user[0]
-        console.log(user, "Filterd user")
-        if (!user) {
-          console.log("no user found",)
-          return res.status(401).json({ message: 'Invalid username or password' });
-        }
-        try {
-          const isValidPassword = await bcrypt.compare(password, user.password);
-          if (!isValidPassword) {
-            console.log("Falsches PW")
-            return res.status(401).json({ message: 'Invalid username or password' });
-          }
-          const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
-          res.json({ token });
-        } catch (err) {
-          console.log("Wrong credentials", err)
-        }
-
-      }
-    });
-    //const user = users.find(user => user.username === username);
-
-    console.log("user found!!!", users)
-
-  } catch (error) {
-    console.error(error);
-    //res.status(500).json({ message: 'Internal Server Error' });
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      console.log("Falsches PW")
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+    const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+    res.json({ token });
+  } catch (err) {
+    console.log("Wrong credentials", err)
   }
+
 });
+
+
+
+
+function getUsers() {
+
+  const query = 'SELECT * FROM users'
+  db.query(query, async (err, results) => {
+    if (err) console.error('Error executing query:', err);
+    else {
+
+      return results;
+    }
+
+  });
+  return
+
+}
+
+function userExists(_username) {
+  users = getUsers();
+  if (!users) console.log("No User found")
+  else return users.some(user => user.username === _username);
+
+}
+
+function getUserByName(_username){
+  users = getUsers();
+  if (!users) console.log("No User found")
+  else return users.find(user => user.username === _username);
+
+}
 
 // Protected route
 // app.get('/profile', authenticateUser, (req, res) => {
