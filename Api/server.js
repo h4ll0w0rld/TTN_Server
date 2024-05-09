@@ -147,7 +147,7 @@ app.post('/webhook', async (req, res) => {
   res.status(200).json({ message: 'Success!' });
 });
 
-app.get("/humidity" ,async (_req, _res) => {
+app.get("/humidity" , authenticateToken , async (_req, _res) => {
   try {
     const humidData = await getHumid();
     _res.status(200).send(JSON.stringify(humidData));
