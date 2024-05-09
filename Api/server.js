@@ -85,7 +85,7 @@ function getUsers() {
   db.query(query, async (err, results) => {
     if (err) console.error('Error executing query:', err);
     else {
-      console.log("retrived Users")
+      console.log("retrived Users", results)
       return results;
     }
 
@@ -95,9 +95,7 @@ function getUsers() {
 }
 
 function userExists(_username) {
-  users = getUsers();
-  if (!users) console.log("No User found")
-  else return users.some(user => user.username === _username);
+   return users.some(user => user.username === _username);
 
 }
 
