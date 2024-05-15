@@ -7,7 +7,7 @@ function authenticateToken(req, res, next) {
     return res.status(401).json({ message: 'Authorization token is missing' });
   }
 
-  jwt.verify(token, 'your_secret_key', (err, decoded) => {
+  jwt.verify(token, 'x4MU7dkgvJxVaZZL9MM4z3hVwkhUHLxP', (err, decoded) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }
