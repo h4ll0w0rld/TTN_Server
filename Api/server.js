@@ -117,6 +117,18 @@ app.post('/todos', (req, res) => {
   });
 });
 
+app.get('/todos', (req,res) => {
+  const query = "SELECT * FROM todos";
+  db.query(queryk, (err,results) => {
+    if(err){
+      console.log('Error executing query:', err)
+      reject(err)
+    }else {
+      resolve(results);
+    }
+  })
+})
+
 async function getUsers() {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM users';
@@ -125,7 +137,6 @@ async function getUsers() {
         console.error('Error executing query:', err);
         reject(err);
       } else {
-        console.log("retrieved Users", results);
         resolve(results);
       }
     });
