@@ -131,13 +131,17 @@ app.get('/todos', (req,res) => {
   })
 })
 
+app.post('/todos/delete', (req, res) => {
+  console.log(req)
+})
+
 async function getUsers() {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM users';
     db.query(query, (err, results) => {
       if (err) {
         console.error('Error executing query:', err);
-        
+        reject(err)
       } else {
         resolve(results);
       }
