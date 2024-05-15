@@ -99,22 +99,22 @@ function addToDo(_toDo){
   const query = "INSERT INTO ToDo (, password) VALUES (?, ?)"
 
 }
-app.post('/todos', (req, res) => {
-  const { headline, description, isDone } = req.body;
-  const todo = { headline, description, isDone };
+// app.post('/todos', (req, res) => {
+//   const { headline, description, isDone } = req.body;
+//   const todo = { headline, description, isDone };
 
-  const query = 'INSERT INTO todos SET ?';
+//   const query = 'INSERT INTO todos SET ?';
 
-  connection.query(query, todo, (err, result) => {
-    if (err) {
-      console.error('Error creating ToDo task:', err);
-      res.status(500).send('Error creating ToDo task.');
-    } else {
-      console.log('New ToDo task created:', result.insertId);
-      res.status(201).send('New ToDo task created.');
-    }
-  });
-});
+//   connection.query(query, todo, (err, result) => {
+//     if (err) {
+//       console.error('Error creating ToDo task:', err);
+//       res.status(500).send('Error creating ToDo task.');
+//     } else {
+//       console.log('New ToDo task created:', result.insertId);
+//       res.status(201).send('New ToDo task created.');
+//     }
+//   });
+// });
 
 async function getUsers() {
   return new Promise((resolve, reject) => {
