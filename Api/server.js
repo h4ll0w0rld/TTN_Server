@@ -122,9 +122,11 @@ app.get('/todos', (req,res) => {
   db.query(query, (err,results) => {
     if(err){
       console.log('Error executing query:', err)
-      reject(err)
+      res.status(500).send('Error creating ToDo task.');
+     
     }else {
-      resolve(results);
+      res.status(200).send(JSON.stringify(results));
+      
     }
   })
 })
@@ -135,7 +137,7 @@ async function getUsers() {
     db.query(query, (err, results) => {
       if (err) {
         console.error('Error executing query:', err);
-        reject(err);
+        
       } else {
         resolve(results);
       }
