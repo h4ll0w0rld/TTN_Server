@@ -106,7 +106,7 @@ app.post('/todos', (req, res) => {
   )
   const query = 'INSERT INTO todos SET ?';
 
-  connection.query(query, todo, (err, result) => {
+  db.query(query, todo, (err, result) => {
     if (err) {
       console.error('Error creating ToDo task:', err);
       res.status(500).send('Error creating ToDo task.');
