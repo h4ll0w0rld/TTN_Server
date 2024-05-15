@@ -133,13 +133,13 @@ app.get('/todos', (req,res) => {
 
 app.post('/todos/delete', (req, res) => {
   const query = `DELETE FROM todos WHERE id = ${req.body.id};`;
-  db.query(query, (err, res) => {
+  db.query(query, (err, result) => {
     if(err){
       console.log('Error executing query:', err)
       res.status(500).send('Error deleting ToDo task.');
     }else{
       console.log("Todo deleted");
-      res.status(200).send("Task Deleted")
+      res.status(200).send("Task Deleted");
     }
   })
 
