@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/jwt-middleware');
+const key = "x4MU7dkgvJxVaZZL9MM4z3hVwkhUHLxP" //JWT Key 
 //const { authenticateUser } = require('./middleware/authenticate');
 
 const app = express();
@@ -64,9 +65,6 @@ app.post('/login', async (req, res) => {
 
   const { username, password } = req.body;
 
-
-  //resolve(results);
-
   user = await getUserByName(username);
   if (!user) return res.status(401).json({ message: 'Invalid username or password' });
 
@@ -76,7 +74,7 @@ app.post('/login', async (req, res) => {
       console.log("Falsches PW")
       return res.status(401).json({ message: 'Invalid username or password' });
     }
-    const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id }, key, { expiresIn: '1h' });
     res.json({ token });
   } catch (err) {
     console.log("Wrong credentials", err)
@@ -84,8 +82,39 @@ app.post('/login', async (req, res) => {
 
 });
 
+function getUserByJWT(_key){
+
+  jwt.verify(token, key, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: 'Failed to authenticate token' });
+    }
+    return decoded
+  });
+  console.log("Can not extract user")
+}
 
 
+
+function addToDo(_toDo){
+  const query = "INSERT INTO ToDo (, password) VALUES (?, ?)"
+
+}
+app.post('/todos', (req, res) => {
+  const { headline, description, isDone } = req.body;
+  const todo = { headline, description, isDone };
+
+  const query = 'INSERT INTO todos SET ?';
+
+  connection.query(query, todo, (err, result) => {
+    if (err) {
+      console.error('Error creating ToDo task:', err);
+      res.status(500).send('Error creating ToDo task.');
+    } else {
+      console.log('New ToDo task created:', result.insertId);
+      res.status(201).send('New ToDo task created.');
+    }
+  });
+});
 
 async function getUsers() {
   return new Promise((resolve, reject) => {
@@ -125,13 +154,7 @@ async function getUserByName(_username) {
   }
 }
 
-// Protected route
-// app.get('/profile', authenticateUser, (req, res) => {
-//     // Access user information from req.user
-//     res.json(req.user);
-// });
 
-// Route to handle POST requests
 app.post('/webhook', async (req, res) => {
   reqBody = req.body.decoded_payload
 
@@ -147,7 +170,7 @@ app.post('/webhook', async (req, res) => {
   res.status(200).json({ message: 'Success!' });
 });
 
-app.get("/humidity" , authenticateToken , async (_req, _res) => {
+app.get("/humidity", authenticateToken, async (_req, _res) => {
   try {
     const humidData = await getHumid();
     _res.status(200).send(JSON.stringify(humidData));
@@ -155,7 +178,15 @@ app.get("/humidity" , authenticateToken , async (_req, _res) => {
     console.error('Error getting humidity data:', error);
     _res.status(500).send('Internal Server Error');
   }
-  //_res.send(JSON.stringify(getHumid())).status(200);
+})
+
+app.get("/addProject", authenticateToken, async (_req, _res) => {
+  try {
+    const query = '';
+    db.execute(query, [])
+  } catch (err) {
+
+  }
 })
 
 async function saveHumidityData(_id, _humidity, _time) {
