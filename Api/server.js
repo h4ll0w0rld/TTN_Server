@@ -102,7 +102,8 @@ function addToDo(_toDo){
 app.post('/todos', (req, res) => {
   const { headline, description, isDone } = req.body;
   const todo = { headline, description, isDone };
-
+  console.log("HEy ja", headline, description
+  )
   const query = 'INSERT INTO todos SET ?';
 
   connection.query(query, todo, (err, result) => {
