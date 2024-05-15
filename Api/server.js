@@ -119,7 +119,7 @@ app.post('/todos', (req, res) => {
 
 app.get('/todos', (req,res) => {
   const query = "SELECT * FROM todos";
-  db.query(queryk, (err,results) => {
+  db.query(query, (err,results) => {
     if(err){
       console.log('Error executing query:', err)
       reject(err)
