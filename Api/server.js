@@ -144,7 +144,7 @@ app.get('/todos', (req,res) => {
 
 app.delete('/todo', (req, res) => {
   console.log("req: ", req.params)
-  const query = `DELETE FROM todos WHERE id = ${req.params.id};`;
+  const query = `DELETE FROM todos WHERE id = ${req.body.id};`;
   db.query(query, (err, result) => {
     if(err){
       console.log('Error executing query:', err)
@@ -252,7 +252,7 @@ async function getHumid() {
         console.error('Error executing query:', err);
         reject(err);
       } else {
-        console.log('Retrieved values from HumidSens table:', results);
+        //console.log('Retrieved values from HumidSens table:', results);
         resolve(results);
       }
     });
