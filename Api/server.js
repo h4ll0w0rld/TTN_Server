@@ -118,7 +118,7 @@ app.post("/todo/done", (req, res) => {
   const query = 'UPDATE Pot SET isDone = true WHERE id = ?'
   db.query(query, req.id, (err, result) => {
     if(err){
-      console.log("Err updating ToDo")
+      console.log("Err updating ToDo", err)
       res.status(500).send("Err updating ToDo")
     } else {
       res.status(201).send('ToDo task updated.');
