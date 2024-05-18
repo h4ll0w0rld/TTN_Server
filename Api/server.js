@@ -113,7 +113,7 @@ app.post('/todos', (req, res) => {
   });
 });
 
-app.post("todo/done", (req, res) => {
+app.post("/todo/done", (req, res) => {
 
   const query = 'UPDATE Pot SET isDone = true WHERE id = ?'
   db.query(query, req.id, (err, result) => {
@@ -142,7 +142,7 @@ app.get('/todos', (req,res) => {
   })
 })
 
-app.post('/todos/delete', (req, res) => {
+app.delete('/todo', (req, res) => {
   const query = `DELETE FROM todos WHERE id = ${req.body.id};`;
   db.query(query, (err, result) => {
     if(err){
