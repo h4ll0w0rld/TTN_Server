@@ -115,7 +115,7 @@ app.post('/todos', (req, res) => {
 
 app.post("/todo/done", (req, res) => {
 
-  const query = 'UPDATE Pot SET isDone = true WHERE id = ?';
+  const query = 'UPDATE ToDo SET isDone = true WHERE id = ?';
   db.query(query, [req.body.id], (err, result) => {
     if(err){
       console.log("Err updating ToDo", err)
