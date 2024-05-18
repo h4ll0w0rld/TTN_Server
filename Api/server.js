@@ -143,6 +143,7 @@ app.get('/todos', (req,res) => {
 })
 
 app.delete('/todo', (req, res) => {
+  console.log("req: ", req.params)
   const query = `DELETE FROM todos WHERE id = ${req.params.id};`;
   db.query(query, (err, result) => {
     if(err){
