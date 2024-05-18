@@ -143,7 +143,7 @@ app.get('/todos', (req,res) => {
 })
 
 app.delete('/todo', (req, res) => {
-  const query = `DELETE FROM todos WHERE id = ${req.body.id};`;
+  const query = `DELETE FROM todos WHERE id = ${req.params.id};`;
   db.query(query, (err, result) => {
     if(err){
       console.log('Error executing query:', err)
