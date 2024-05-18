@@ -95,14 +95,10 @@ function getUserByJWT(_key){
 
 
 
-function addToDo(_toDo){
-  const query = "INSERT INTO ToDo (, password) VALUES (?, ?)"
-
-}
 app.post('/todos', (req, res) => {
   const { headline, description, isDone } = req.body;
   const todo = { headline, description, isDone };
-  console.log("HEy ja", headline, description
+  console.log("Hey ja", headline, description
   )
   const query = 'INSERT INTO todos SET ?';
 
@@ -116,6 +112,21 @@ app.post('/todos', (req, res) => {
     }
   });
 });
+
+app.post("todo/done", (req, res) => {
+
+  const query = 'UPDATE Pot SET isDone = true WHERE id = ?'
+  db.query(query, req.id, (err, result) => {
+    if(err){
+      console.log("Err updating ToDo")
+      res.status(500).send("Err updating ToDo")
+    } else {
+      res.status(201).send('ToDo task updated.');
+    }
+
+  })
+ 
+})
 
 app.get('/todos', (req,res) => {
   const query = "SELECT * FROM todos";
