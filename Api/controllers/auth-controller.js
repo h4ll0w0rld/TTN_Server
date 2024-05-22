@@ -18,7 +18,7 @@ async function login(req, res) {
     if (await AuthService.userExists()) return res.status(401).json({ message: 'Invalid username or password' });
     try {
         const jwtToken = await AuthService.loginUser(username, password)
-        console.log(jwtToken)
+        console.log("gen token", jwtToken)
         res.json({ jwtToken });
     } catch (err) {
         console.log("Wrong credentials", err)
