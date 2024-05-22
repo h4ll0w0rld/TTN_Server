@@ -9,7 +9,11 @@ const key = "x4MU7dkgvJxVaZZL9MM4z3hVwkhUHLxP" //JWT Key
 //const { authenticateUser } = require('./middleware/authenticate');
 
 const app = express();
-const port = 3333; // Change the port number if needed
+const port = process.env.PORT || 3334; 
+
+
+const authRoutes = require('./routs/auth-routes');
+const todoRoutes = require('./routs/todo-routes');
 
 const db = mysql.createConnection({
   host: 'localhost',
@@ -33,85 +37,88 @@ app.use(bodyParser.json());
 // Use CORS middleware
 app.use(cors());
 
+app.use(authRoutes)
+app.use(todoRoutes)
+
 // Middleware for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Register user
-app.post('/register', async (req, res) => {
-  const { username, password } = req.body
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+// app.post('/register', async (req, res) => {
+//   const { username, password } = req.body
+//   try {
+//     const hashedPassword = await bcrypt.hash(password, 10);
 
 
-    if (await userExists(username)) {
-      console.log("user exists")
-      return res.send("username already used").status(301)
+//     if (await userExists(username)) {
+//       console.log("user exists")
+//       return res.send("username already used").status(301)
 
-    } else {
-      const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
-      db.execute(query, [username, hashedPassword]);
-      res.send("User crated").status(200);
-      console.log(`Saved User ${username} to the database`);
-    }
+//     } else {
+//       const query = 'INSERT INTO users (username, password) VALUES (?, ?)';
+//       db.execute(query, [username, hashedPassword]);
+//       res.send("User crated").status(200);
+//       console.log(`Saved User ${username} to the database`);
+//     }
 
 
-  } catch (error) {
-    console.log("Error with Hashing Password", error)
-  }
+//   } catch (error) {
+//     console.log("Error with Hashing Password", error)
+//   }
 
-});
+// });
 // Login user
-app.post('/login', async (req, res) => {
+// app.post('/login', async (req, res) => {
 
-  const { username, password } = req.body;
+//   const { username, password } = req.body;
 
-  user = await getUserByName(username);
-  if (!user) return res.status(401).json({ message: 'Invalid username or password' });
+//   user = await getUserByName(username);
+//   if (!user) return res.status(401).json({ message: 'Invalid username or password' });
 
-  try {
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      console.log("Falsches PW")
-      return res.status(401).json({ message: 'Invalid username or password' });
-    }
-    const token = jwt.sign({ userId: user.id }, key, { expiresIn: '1h' });
-    res.json({ token });
-  } catch (err) {
-    console.log("Wrong credentials", err)
-  }
+//   try {
+//     const isValidPassword = await bcrypt.compare(password, user.password);
+//     if (!isValidPassword) {
+//       console.log("Falsches PW")
+//       return res.status(401).json({ message: 'Invalid username or password' });
+//     }
+//     const token = jwt.sign({ userId: user.id }, key, { expiresIn: '1h' });
+//     res.json({ token });
+//   } catch (err) {
+//     console.log("Wrong credentials", err)
+//   }
 
-});
+// });
 
-function getUserByJWT(_key){
+// function getUserByJWT(_key){
 
-  jwt.verify(token, key, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ message: 'Failed to authenticate token' });
-    }
-    return decoded
-  });
-  console.log("Can not extract user")
-}
+//   jwt.verify(token, key, (err, decoded) => {
+//     if (err) {
+//       return res.status(403).json({ message: 'Failed to authenticate token' });
+//     }
+//     return decoded
+//   });
+//   console.log("Can not extract user")
+// }
 
 
 
-app.post('/todos', (req, res) => {
-  const { headline, description, isDone } = req.body;
-  const todo = { headline, description, isDone };
-  console.log("Hey ja", headline, description
-  )
-  const query = 'INSERT INTO todos SET ?';
+// app.post('/todos', (req, res) => {
+//   const { headline, description, isDone } = req.body;
+//   const todo = { headline, description, isDone };
+//   console.log("Hey ja", headline, description
+//   )
+//   const query = 'INSERT INTO todos SET ?';
 
-  db.query(query, todo, (err, result) => {
-    if (err) {
-      console.error('Error creating ToDo task:', err);
-      res.status(500).send('Error creating ToDo task.');
-    } else {
-      console.log('New ToDo task created:', result.insertId);
-      res.status(201).send('New ToDo task created.');
-    }
-  });
-});
+//   db.query(query, todo, (err, result) => {
+//     if (err) {
+//       console.error('Error creating ToDo task:', err);
+//       res.status(500).send('Error creating ToDo task.');
+//     } else {
+//       console.log('New ToDo task created:', result.insertId);
+//       res.status(201).send('New ToDo task created.');
+//     }
+//   });
+// });
 
 app.post("/todo/done", (req, res) => {
 
@@ -128,35 +135,35 @@ app.post("/todo/done", (req, res) => {
  
 })
 
-app.get('/todos', (req,res) => {
-  const query = "SELECT * FROM todos";
-  db.query(query, (err,results) => {
-    if(err){
-      console.log('Error executing query:', err)
-      res.status(500).send('Error creating ToDo task.');
+// app.get('/todos', (req,res) => {
+//   const query = "SELECT * FROM todos";
+//   db.query(query, (err,results) => {
+//     if(err){
+//       console.log('Error executing query:', err)
+//       res.status(500).send('Error creating ToDo task.');
      
-    }else {
-      res.status(200).send(JSON.stringify(results));
+//     }else {
+//       res.status(200).send(JSON.stringify(results));
       
-    }
-  })
-})
+//     }
+//   })
+// })
 
-app.delete('/todo', (req, res) => {
-  console.log("req: ", req.params)
-  const query = `DELETE FROM todos WHERE id = ${req.body.id};`;
-  db.query(query, (err, result) => {
-    if(err){
-      console.log('Error executing query:', err)
-      res.status(500).send('Error deleting ToDo task.');
-    }else{
-      console.log("Todo deleted");
-      res.status(200).send("Task Deleted");
-    }
-  })
+// app.delete('/todo', (req, res) => {
+//   console.log("req: ", req.params)
+//   const query = `DELETE FROM todos WHERE id = ${req.body.id};`;
+//   db.query(query, (err, result) => {
+//     if(err){
+//       console.log('Error executing query:', err)
+//       res.status(500).send('Error deleting ToDo task.');
+//     }else{
+//       console.log("Todo deleted");
+//       res.status(200).send("Task Deleted");
+//     }
+//   })
 
-  console.log(req.body)
-})
+//   console.log(req.body)
+// })
 
 async function getUsers() {
   return new Promise((resolve, reject) => {
