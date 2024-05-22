@@ -7,6 +7,6 @@ const router = express.Router();
 router.post('/todos', authenticateToken, createTodo);
 router.post('/todo/done', authenticateToken, todoDone )
 router.get('/todos', authenticateToken, getTodos);
-router.delete('/todos', authenticateToken, deleteTodo);
+router.delete('/todo', authenticateToken, deleteTodo);
 
 module.exports = router;
