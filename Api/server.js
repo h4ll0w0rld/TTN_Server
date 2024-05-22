@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/jwt-middleware');
 const key = "x4MU7dkgvJxVaZZL9MM4z3hVwkhUHLxP" //JWT Key 
+require('dotenv').config();
 //const { authenticateUser } = require('./middleware/authenticate');
 
 const app = express();
@@ -15,20 +16,7 @@ const port = process.env.PORT || 3334;
 const authRoutes = require('./routs/auth-routes');
 const todoRoutes = require('./routs/todo-routes');
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'lora',
-  password: 'your_password_here',
-  database: 'LoRa',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
 
-db.connect((err) => {
-  //nif (err) throw err;
-  console.log('Connected to MySQL database!');
-});
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -120,20 +108,20 @@ app.use(todoRoutes)
 //   });
 // });
 
-app.post("/todo/done", (req, res) => {
+// app.post("/todo/done", (req, res) => {
 
-  const query = 'UPDATE todos SET isDone = true WHERE id = ?';
-  db.query(query, [req.body.id], (err, result) => {
-    if(err){
-      console.log("Err updating ToDo", err)
-      res.status(500).send("Err updating ToDo")
-    } else {
-      res.status(201).send('ToDo task updated.');
-    }
+//   const query = 'UPDATE todos SET isDone = true WHERE id = ?';
+//   db.query(query, [req.body.id], (err, result) => {
+//     if(err){
+//       console.log("Err updating ToDo", err)
+//       res.status(500).send("Err updating ToDo")
+//     } else {
+//       res.status(201).send('ToDo task updated.');
+//     }
 
-  })
+//   })
  
-})
+// })
 
 // app.get('/todos', (req,res) => {
 //   const query = "SELECT * FROM todos";
@@ -165,46 +153,46 @@ app.post("/todo/done", (req, res) => {
 //   console.log(req.body)
 // })
 
-async function getUsers() {
-  return new Promise((resolve, reject) => {
-    const query = 'SELECT * FROM users';
-    db.query(query, (err, results) => {
-      if (err) {
-        console.error('Error executing query:', err);
-        reject(err)
-      } else {
-        resolve(results);
-      }
-    });
-  });
-}
+// async function getUsers() {
+//   return new Promise((resolve, reject) => {
+//     const query = 'SELECT * FROM users';
+//     db.query(query, (err, results) => {
+//       if (err) {
+//         console.error('Error executing query:', err);
+//         reject(err)
+//       } else {
+//         resolve(results);
+//       }
+//     });
+//   });
+// }
 
-async function userExists(_username) {
-  const user = await getUserByName(_username)
+// async function userExists(_username) {
+//   const user = await getUserByName(_username)
 
-  if (user) {
+//   if (user) {
 
-    return true;
-  }
+//     return true;
+//   }
 
-  return false
-}
+//   return false
+// }
 
-async function getUserByName(_username) {
-  const users = await getUsers();
-  if (!users) {
-    console.log("No User found");
-    return null;
-  } else {
-    const user = users.find(user => user.username === _username);
-    console.log("user found: ", user);
-    return user;
-  }
-}
+// async function getUserByName(_username) {
+//   const users = await getUsers();
+//   if (!users) {
+//     console.log("No User found");
+//     return null;
+//   } else {
+//     const user = users.find(user => user.username === _username);
+//     console.log("user found: ", user);
+//     return user;
+//   }
+// }
 
 
 app.post('/webhook', async (req, res) => {
-  reqBody = req.body.decoded_payload
+  const reqBody = req.body.decoded_payload
 
   console.log(req.body.uplink_message.decoded_payload)
 
@@ -228,14 +216,14 @@ app.get("/humidity", authenticateToken, async (_req, _res) => {
   }
 })
 
-app.get("/addProject", authenticateToken, async (_req, _res) => {
-  try {
-    const query = '';
-    db.execute(query, [])
-  } catch (err) {
+// app.get("/addProject", authenticateToken, async (_req, _res) => {
+//   try {
+//     const query = '';
+//     db.execute(query, [])
+//   } catch (err) {
 
-  }
-})
+//   }
+// })
 
 async function saveHumidityData(_id, _humidity, _time) {
 

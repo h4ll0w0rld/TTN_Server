@@ -32,6 +32,17 @@ async function deleteTodo(req, res) {
     }
 };
 
+async function todoDone(req, res) {
+    try {
+        const { id } = req.body
+        await TodoService.todoDone(id);
+        res.send('Todo is marked done').status(201)
+    } catch {
+        console.log('Error switching todo status')
+        res.send(500).send('Error switching status')
+    }
+}
+
 module.exports = {
     createTodo,
     getTodos,
