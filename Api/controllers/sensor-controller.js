@@ -2,7 +2,7 @@ const HumidService = require('../services/humiditiy-service');
 
 async function getHumid(req, res){
     try {
-        const todos = await HumidService.getTodos();
+        const todos = await HumidService.getHumid();
         res.status(200).json(todos);
     } catch (err) {
         console.error('Error fetching ToDo tasks:', err);
