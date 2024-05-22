@@ -3,6 +3,14 @@ const bcrypt = require('bcrypt');
 
 const jwt = require('jsonwebtoken');
 
+
+async function registerUser(username, password) {
+    if (await userExists(username)) {
+        throw new Error('Username already used');
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await createUser(username, hashedPassword);
+};
 async function loginUser(username, password) {
     const user = await getUserByName(username);
     if (!user) {
@@ -46,5 +54,7 @@ function createUser(username, hashedPassword) {
 module.exports = {
     getUserByName,
     userExists,
-    createUser
+    createUser,
+    loginUser,
+    registerUser
 };
