@@ -7,7 +7,7 @@ function authenticateToken(req, res, next) {
   if (!token) {
     return res.status(401).json({ message: 'Authorization token is missing' });
   }
-  console.log("KEY 02: ", process.env.JWT_KEY)
+
   console.log("TOKEN: ", token)
   jwt.verify(token, process.env.JWT_TOKEN, (err, decoded) => {
     if (err) {

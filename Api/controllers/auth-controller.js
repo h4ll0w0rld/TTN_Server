@@ -19,7 +19,7 @@ async function login(req, res) {
     try {
         const jwtToken = await AuthService.loginUser(username, password)
         console.log(jwtToken)
-        res.json(jwtToken)
+        res.json({ jwtToken });
     } catch (err) {
         console.log("Wrong credentials", err)
     }
