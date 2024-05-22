@@ -5,7 +5,7 @@ const authenticateToken = require('../middleware/jwt-middleware');
 const router = express.Router();
 
 router.post('/todos', authenticateToken, createTodo);
-router.post('/todo/done', )
+router.post('/todo/done', authenticateToken, todoDone )
 router.get('/todos', authenticateToken, getTodos);
 router.delete('/todos', authenticateToken, deleteTodo);
 
