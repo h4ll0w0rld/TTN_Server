@@ -15,6 +15,7 @@ const port = process.env.PORT || 3334;
 
 const authRoutes = require('./routs/auth-routes');
 const todoRoutes = require('./routs/todo-routes');
+const sensorRoutes = require('./routs/sensor-routes');
 
 
 
@@ -31,6 +32,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(authRoutes)
 app.use(todoRoutes)
+app.use(sensorRoutes)
 // Register user
 // app.post('/register', async (req, res) => {
 //   const { username, password } = req.body
@@ -206,15 +208,15 @@ app.post('/webhook', async (req, res) => {
   res.status(200).json({ message: 'Success!' });
 });
 
-app.get("/humidity", authenticateToken, async (_req, _res) => {
-  try {
-    const humidData = await getHumid();
-    _res.status(200).send(JSON.stringify(humidData));
-  } catch (error) {
-    console.error('Error getting humidity data:', error);
-    _res.status(500).send('Internal Server Error');
-  }
-})
+// app.get("/humidity", authenticateToken, async (_req, _res) => {
+//   try {
+//     const humidData = await getHumid();
+//     _res.status(200).send(JSON.stringify(humidData));
+//   } catch (error) {
+//     console.error('Error getting humidity data:', error);
+//     _res.status(500).send('Internal Server Error');
+//   }
+// })
 
 // app.get("/addProject", authenticateToken, async (_req, _res) => {
 //   try {
