@@ -46,5 +46,6 @@ async function todoDone(req, res) {
 module.exports = {
     createTodo,
     getTodos,
-    deleteTodo
+    deleteTodo,
+    todoDone
 };
