@@ -11,6 +11,8 @@ async function registerUser(username, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     await createUser(username, hashedPassword);
 };
+
+
 async function loginUser(username, password) {
     const user = await getUserByName(username);
     if (!user) {
@@ -24,6 +26,8 @@ async function loginUser(username, password) {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_KEY, { expiresIn: '1h' });
     return token;
 };
+
+
 
 function getUserByName(username) {
     return new Promise((resolve, reject) => {

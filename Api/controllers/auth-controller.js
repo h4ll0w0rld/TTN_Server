@@ -13,7 +13,7 @@ const register = async (req, res) => {
 
 
 async function login(req, res) {
-    console.log("Logging in ? ")
+    console.log("Logging in ? ", req)
     const { username, password } = req.body;
     if (await AuthService.userExists()) return res.status(401).json({ message: 'Invalid username or password' });
     try {
