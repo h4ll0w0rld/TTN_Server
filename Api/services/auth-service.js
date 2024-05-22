@@ -20,6 +20,7 @@ async function loginUser(username, password) {
     if (!isValidPassword) {
         throw new Error('Invalid username or password');
     }
+    console.log("KEY 01: ", process.env.JWT_KEY)
     const token = jwt.sign({ userId: user.id }, process.env.JWT_KEY, { expiresIn: '1h' });
     return token;
 };
