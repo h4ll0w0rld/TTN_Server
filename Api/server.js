@@ -37,12 +37,12 @@ app.use(bodyParser.json());
 // Use CORS middleware
 app.use(cors());
 
-app.use(authRoutes)
-app.use(todoRoutes)
+
 
 // Middleware for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(authRoutes)
+app.use(todoRoutes)
 // Register user
 // app.post('/register', async (req, res) => {
 //   const { username, password } = req.body
