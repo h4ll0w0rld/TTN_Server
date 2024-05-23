@@ -40,7 +40,7 @@ async function getPots(req, res) {
 async function delPot(req, res) {
     try {
         const { potId } = req.body;
-        console.log("Dealing with: ", potId)
+        console.log("Dealing with: ", req.body)
         const response =  await PotService.delPot(potId);
         res.status(200).json("Pot deleted", response);
     } catch (err) {
