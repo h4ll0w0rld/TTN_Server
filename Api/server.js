@@ -11,6 +11,7 @@ const port = process.env.PORT || 3334;
 const authRoutes = require('./routs/auth-routes');
 const todoRoutes = require('./routs/todo-routes');
 const sensorRoutes = require('./routs/sensor-routes');
+const potRoutes = require('./routs/pot-routes');
 
 
 
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(authRoutes)
 app.use(todoRoutes)
 app.use(sensorRoutes)
+app.use(potRoutes)
 
 
 

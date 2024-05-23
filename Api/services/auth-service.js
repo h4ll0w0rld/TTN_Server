@@ -25,7 +25,15 @@ async function loginUser(username, password) {
     console.log("KEY 01: ", process.env.JWT_KEY)
     const token = jwt.sign({ userId: user.id }, process.env.JWT_KEY, { expiresIn: '1h' });
     return token;
-};
+}; 
+//const isValidPassword = await bcrypt.compare(password, user.password);
+//     if (!isValidPassword) {
+//       console.log("Falsches PW")
+//       return res.status(401).json({ message: 'Invalid username or password' });
+//     }
+//     const token = jwt.sign({ userId: user.id }, key, { expiresIn: '1h' });
+//     res.json({ token });
+//   } catch (err) {
 
 
 
