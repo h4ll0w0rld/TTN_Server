@@ -40,11 +40,11 @@ async function getPots(req, res) {
 async function delPot(req, res) {
     try {
         const { potId } = req.body;
-        await PotService.delPot(potId);
-        res.status(200).json("Pot deleted");
+        const response =  await PotService.delPot(potId);
+        res.status(200).json("Pot deleted", response);
     } catch (err) {
-        console.error('Error fetching ToDo tasks:', err);
-        res.status(500).send('Error fetching ToDo tasks.');
+        console.error('Error deleting Pot:', err);
+        res.status(500).send('Error deleting Pot');
     }
 
 }
@@ -53,8 +53,8 @@ async function delPot(req, res) {
 async function delLog(req, res) {
     try {
         const { potId, logId } = req.body;
-        await PotService.delLog(potId, logId);
-        res.status(200).json("Log detatched");
+        const response = await PotService.delLog(potId, logId);
+        res.status(200).json("Log detatched", response);
     } catch (err) {
         console.error('Error fetching ToDo tasks:', err);
         res.status(500).send('Error fetching ToDo tasks.');
