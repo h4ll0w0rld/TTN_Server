@@ -53,6 +53,7 @@ async function delPot(req, res) {
 async function delLog(req, res) {
     try {
         const { potId, logId } = req.body;
+        console.log("Dealing with: ", potId, logId)
         const response = await PotService.delLog(potId, logId);
         res.status(200).json("Log detatched", response);
     } catch (err) {
