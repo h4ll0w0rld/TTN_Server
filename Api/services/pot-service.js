@@ -36,6 +36,7 @@ function getPots() {
 }
 
 function delPot(potId) {
+    console.log("POT ID = ", potId)
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM Pot WHERE id = ?';
         db.query(query, [potId], (err, results) => {
