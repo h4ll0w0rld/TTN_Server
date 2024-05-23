@@ -42,7 +42,7 @@ async function delPot(req, res) {
         const { id } = req.body;
         console.log("Dealing with: ", req.body)
         const response =  await PotService.delPot(id);
-        res.status(200).json("Pot deleted", response);
+        res.status(200).json("Pot deleted");
     } catch (err) {
         console.error('Error deleting Pot:', err);
         res.status(500).send('Error deleting Pot');
