@@ -40,6 +40,7 @@ async function getPots(req, res) {
 async function delPot(req, res) {
     try {
         const { potId } = req.body;
+        console.log("Dealing with: ", potId)
         const response =  await PotService.delPot(potId);
         res.status(200).json("Pot deleted", response);
     } catch (err) {
@@ -53,7 +54,7 @@ async function delPot(req, res) {
 async function delLog(req, res) {
     try {
         const { potId, logId } = req.body;
-        console.log("Dealing with: ", potId, logId)
+       
         const response = await PotService.delLog(potId, logId);
         res.status(200).json("Log detatched", response);
     } catch (err) {
