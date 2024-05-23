@@ -14,12 +14,12 @@ async function register(req, res) {
 
 
 async function login(req, res) {
-    console.log("Logging in ? ", req)
+  
     const { username, password } = req.body;
     if (await AuthService.userExists()) return res.status(401).json({ message: 'Invalid username or password' });
     try {
         const jwtToken = await AuthService.loginUser(username, password)
-        console.log("gen token", jwtToken)
+       
         res.json({ jwtToken });
     } catch (err) {
         console.log("Wrong credentials", err)
