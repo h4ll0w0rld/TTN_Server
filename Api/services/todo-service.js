@@ -54,10 +54,9 @@ function createAutoTask(){
                     if (sensor.value < pot.waterthreshhold) {
                         const title = `${pot.title} Braucht wasser`;
                         const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
-                        db.query('INSERT INTO ToDo (title, description) VALUES (?, ?)', [title, description], (error, results) => {
-                            if (error) throw error;
-                            console.log('ToDo task created:', results.insertId);
-                        });
+                        createTodo(title, description, false);
+
+                     
                     }
                 });
             });
