@@ -69,7 +69,7 @@ async function updateAutoWatering(req, res) {
         const potId = req.params.id;
         const { autoWateringEnabled } = req.body;
         const result = await PotService.updateAutoWatering(potId, autoWateringEnabled)
-        res.status(200).json("updated", result);
+        res.status(200).json("updated");
 
     } catch {
         console.log("Error updating auto watering");
