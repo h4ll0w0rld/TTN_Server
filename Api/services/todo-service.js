@@ -48,6 +48,7 @@ async function createAutoTask() {
         if (error) throw error;
 
         pots.forEach(async pot => {
+            console.log(pot, "POT")
             var humidity = await HumidService.getHumid()
             const sensor = humidity[humidity.length - 1]
             console.log(sensor.humidity, pot.waterthreshhold, "SENSOR VALUES")
