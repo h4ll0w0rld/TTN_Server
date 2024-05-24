@@ -84,7 +84,7 @@ async function updateThreshhold(req, res) {
         const { threshhold } = req.body;
         console.log("MY VALLLLS: ", potId, threshhold)
         const res = await PotService.updateThreshhold(potId, threshhold)
-        res.status(200).json("updated Threshhold", res);
+        res.status(200).json("updated Threshhold");
 
     } catch {
         console.log("Error updating auto watering");
