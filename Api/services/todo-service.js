@@ -55,7 +55,7 @@ async function createAutoTask() {
             console.log(sensor.humidity, pot.waterthreshhold, "SENSOR VALUES")
             if (sensor.humidity < pot.waterthreshhold) {
 
-
+                console.log("DATA: ", pot)
                 const headline = `${pot.headline} Braucht wasser`;
                 const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
                 if (todoExists(pot.headline)) {
