@@ -10,6 +10,6 @@ router.post('/addLog', authenticateToken, addLog);
 router.delete('/pot', authenticateToken, delPot)
 router.delete('/pot/log', authenticateToken, delLog)
 router.post('/pot/:id/auto-watering', authenticateToken, updateAutoWatering)
-router.post('/pot/:id/threshold', authenticateToken, updateThreshhold)
+//router.post('/pot/:id/threshold', authenticateToken, updateThreshhold)
 
 module.exports = router;
