@@ -71,7 +71,7 @@ async function createAutoTask() {
 }
 
 async function todoExists(headline) {
-    db.query(`SELECT * FROM todos WHERE headline = ${headline}`, (err, res) => {
+    db.query('SELECT * FROM todos WHERE headline = ?', [headline], (err, res) => {
         if (err) throw err;
         return true;
     })
