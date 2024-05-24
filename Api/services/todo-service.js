@@ -42,13 +42,13 @@ function todoDone(id) {
     });
 }
 
-function createAutoTask() {
+async function createAutoTask() {
 
     db.query('SELECT id, autoWateringEnabled FROM Pot WHERE autoWateringEnabled = TRUE', (error, pots) => {
         if (error) throw error;
 
-        pots.forEach(pot => {
-            var humidity = HumidService.getHumid()
+        pots.forEach(async pot => {
+            var humidity = await HumidService.getHumid()
             const sensor = humidity[humidity.length - 1]
             console.log("SENSOR: ", sensor)
             if (sensor.humidity < pot.waterthreshhold) {
