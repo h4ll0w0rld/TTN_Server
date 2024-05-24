@@ -81,10 +81,10 @@ function updateThreshhold(id, threshhold){
     return new Promise((resolve, reject) => {
         console.log(id, threshhold, "herheh")
         const query = 'UPDATE Pot SET waterthreshhold = ? WHERE id = ?';
-        db.query(query, [threshhold, id], (error, result) => {
-            if (error) {
-                console.error('Database error:', error); // Log the error for debugging
-                return reject(error);
+        db.query(query, [threshhold, id], (err, result) => {
+            if (err) {
+                console.error('Database error:', err); // Log the error for debugging
+                return reject(err);
               }
               resolve(result);
         });
