@@ -1,3 +1,4 @@
+const e = require('express');
 const db = require('../config/db');
 const HumidService = require('../services/humiditiy-service');
 
@@ -60,6 +61,7 @@ async function createAutoTask() {
                 const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
 
                 const exists = await todoExists(headline);
+                console.log("EXISTS: ", exists)
                 if (exists) {
 
                     console.log("Creating ToDo Task")
