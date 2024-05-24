@@ -54,16 +54,28 @@ async function createAutoTask() {
             const sensor = humidity[humidity.length - 1]
             console.log(sensor.humidity, pot.waterthreshhold, "SENSOR VALUES")
             if (sensor.humidity < pot.waterthreshhold) {
-                const headline = `${pot.title} Braucht wasser`;
-                const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
-                console.log("Creating ToDo Task")
-                createTodo({ headline, description });
 
+
+                const headline = `${pot.headline} Braucht wasser`;
+                const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
+                if (todoExists(pot.headline)) {
+
+                    console.log("Creating ToDo Task")
+                    createTodo({ headline, description });
+                }
             }
 
         });
     });
 
+}
+
+async function todoExists(headline) {
+    db.query(`SELECT * FROM todos WHERE headline = ${headline}`, (err, res) => {
+        if (err) throw err;
+        return true;
+    })
+    return false
 }
 
 
