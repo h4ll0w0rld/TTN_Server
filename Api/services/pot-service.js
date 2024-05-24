@@ -86,7 +86,7 @@ function updateThreshhold(id, threshhold){
                     console.error('Error executing query:', err);
                     reject(err);
                 } else {
-    
+                    console.log("YEA")
                     resolve(results);
                 }
             });
