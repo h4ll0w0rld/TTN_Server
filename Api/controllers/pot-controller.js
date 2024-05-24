@@ -90,8 +90,6 @@ async function updateThreshhold(req, res) {
         res.status(500).send('Error updating auto watering');
 
     }
-
-
 }
 
 
@@ -101,6 +99,7 @@ module.exports = {
     getPots,
     delPot,
     delLog,
-    updateAutoWatering
+    updateAutoWatering,
+    updateThreshhold
 
 };
