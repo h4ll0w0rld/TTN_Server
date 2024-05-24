@@ -62,7 +62,7 @@ async function createAutoTask() {
 
                 const exists = await todoExists(headline);
                 console.log("EXISTS: ", exists)
-                if (exists) {
+                if (!exists) {
 
                     console.log("Creating ToDo Task")
                     createTodo({ headline, description });
