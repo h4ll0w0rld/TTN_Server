@@ -83,7 +83,7 @@ async function updateThreshhold(req, res) {
         const potId = req.params.id;
         const { threshhold } = req.body;
         console.log("MY VALLLLS: ", potId, threshhold)
-        const res = await PotService.updateThreshhold(potId, threshhold)
+        const response = await PotService.updateThreshhold(potId, threshhold)
         res.status(200).json("updated Threshhold");
 
     } catch {
