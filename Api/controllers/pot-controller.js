@@ -68,8 +68,8 @@ async function updateAutoWatering(req, res) {
     try {
         const potId = req.params.id;
         const { autoWateringEnabled } = req.body;
-        const res = await PotService.updateAutoWatering(potId, autoWateringEnabled)
-        res.status(200).json("updated", res);
+        const result = await PotService.updateAutoWatering(potId, autoWateringEnabled)
+        res.status(200).json("updated", result);
 
     } catch {
         console.log("Error updating auto watering");
@@ -82,7 +82,7 @@ async function updateThreshhold(req, res) {
     try {
         const potId = req.params.id;
         const { threshhold } = req.body;
-        console.log("MY VALLLLS: ", potId, threshhold)
+       
         const response = await PotService.updateThreshhold(potId, threshhold)
         res.status(200).json("updated Threshhold");
 

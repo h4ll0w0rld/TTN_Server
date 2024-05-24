@@ -79,14 +79,13 @@ function updateAutoWatering(id, autoWatering) {
 
 function updateThreshhold(id, threshhold){
     return new Promise((resolve, reject) => {
-        console.log(id, threshhold, "herheh")
-        const query = 'UPDATE Pot SET waterthreshhold = ? WHERE id = ?';
+        const query = 'UPDATE Pot SET autoWateringTodo = ? WHERE id = ?';
         db.query(query, [threshhold, id], (err, results) => {
                 if (err) {
                     console.error('Error executing query:', err);
                     reject(err);
                 } else {
-                    console.log("YEA")
+                 
                     resolve(results);
                 }
             });
