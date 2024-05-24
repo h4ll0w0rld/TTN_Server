@@ -1,7 +1,8 @@
 const db = require('../config/db');
 const HumidService = require('../services/humiditiy-service');
 
-function createTodo({ headline, description, isDone = false}) {
+function createTodo({ headline, description, isDone = false }) {
+    console.log("Getting", headline, description, isDone)
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO todos (headline, description, isDone) VALUES (?, ?, ?)';
         db.query(query, [headline, description, isDone], (err, result) => {
@@ -56,7 +57,7 @@ async function createAutoTask() {
                 const title = `${pot.title} Braucht wasser`;
                 const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
                 console.log("Creating ToDo Task")
-                createTodo({title, description});
+                createTodo({ title, description });
 
             }
 
