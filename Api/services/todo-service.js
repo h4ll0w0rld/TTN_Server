@@ -58,7 +58,9 @@ async function createAutoTask() {
                 console.log("DATA: ", pot)
                 const headline = `${pot.name} Braucht wasser`;
                 const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
-                if (todoExists(pot.name)) {
+
+                const exists = await todoExists(headline);
+                if (exists) {
 
                     console.log("Creating ToDo Task")
                     createTodo({ headline, description });
@@ -71,11 +73,12 @@ async function createAutoTask() {
 }
 
 async function todoExists(headline) {
-    db.query('SELECT * FROM todos WHERE headline = ?', [headline], (err, res) => {
-        if (err) throw err;
-        return true;
-    })
-    return false
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM todos WHERE headline = ?', [headline], (err, res) => {
+            if (err) return reject(err);
+            resolve(res.length > 0); // Resolve with true if a ToDo with the headline exists, otherwise false
+        });
+    });
 }
 
 
