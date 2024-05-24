@@ -32,7 +32,7 @@ app.use(todoRoutes)
 app.use(sensorRoutes)
 app.use(potRoutes)
 
-//setInterval(TodoService.createAutoTask(), 60000);
+setInterval(TodoService.createAutoTask(), 60000);
 
 
 

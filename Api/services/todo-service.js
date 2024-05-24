@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const HumidService = require('../services/humiditiy-service');
 
 function createTodo({ headline, description, isDone }) {
     return new Promise((resolve, reject) => {
@@ -41,26 +42,23 @@ function todoDone(id) {
     });
 }
 
-function createAutoTask(){
+function createAutoTask() {
 
     db.query('SELECT id, autoWateringEnabled FROM Pot WHERE autoWateringEnabled = TRUE', (error, pots) => {
         if (error) throw error;
-        
-        pots.forEach(pot => {
-            db.query('SELECT value FROM Sensor WHERE potId = ?', [pot.id], (error, sensors) => {
-                if (error) throw error;
-                
-                sensors.forEach(sensor => {
-                    if (sensor.value < pot.waterthreshhold) {
-                        const title = `${pot.title} Braucht wasser`;
-                        const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
-                        
-                        createTodo(title, description, false);
 
-                     
-                    }
-                });
-            });
+        pots.forEach(pot => {
+            var humidity = HumidService.getHumid()
+            const sensor = humidity[humidity.length - 1]
+
+            if (sensor.value < pot.waterthreshhold) {
+                const title = `${pot.title} Braucht wasser`;
+                const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
+
+                createTodo(title, description, false);
+                
+            }
+
         });
     });
 
@@ -73,5 +71,5 @@ module.exports = {
     deleteTodoById,
     todoDone,
     createAutoTask
-    
+
 };
