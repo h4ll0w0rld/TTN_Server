@@ -44,7 +44,7 @@ function todoDone(id) {
 
 async function createAutoTask() {
 
-    db.query('SELECT id, autoWateringEnabled FROM Pot WHERE autoWateringEnabled = TRUE', (error, pots) => {
+    db.query('SELECT * FROM Pot WHERE autoWateringEnabled = TRUE', (error, pots) => {
         if (error) throw error;
 
         pots.forEach(async pot => {
