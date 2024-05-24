@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const TodoService = require('../services/todo-service');
 require('dotenv').config();
  
 
@@ -30,6 +31,8 @@ app.use(authRoutes)
 app.use(todoRoutes)
 app.use(sensorRoutes)
 app.use(potRoutes)
+
+setInterval(TodoService.createAutoTask(), 60000);
 
 
 

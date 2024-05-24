@@ -41,9 +41,37 @@ function todoDone(id) {
     });
 }
 
+function createAutoTask(){
+
+    db.query('SELECT id, autoWateringEnabled FROM Pot WHERE autoWateringEnabled = TRUE', (error, pots) => {
+        if (error) throw error;
+        
+        pots.forEach(pot => {
+            db.query('SELECT value FROM Sensor WHERE potId = ?', [pot.id], (error, sensors) => {
+                if (error) throw error;
+                
+                sensors.forEach(sensor => {
+                    if (sensor.value < pot.waterthreshhold) {
+                        const title = `${pot.title} Braucht wasser`;
+                        const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
+                        db.query('INSERT INTO ToDo (title, description) VALUES (?, ?)', [title, description], (error, results) => {
+                            if (error) throw error;
+                            console.log('ToDo task created:', results.insertId);
+                        });
+                    }
+                });
+            });
+        });
+    });
+
+}
+
+
 module.exports = {
     createTodo,
     getTodos,
     deleteTodoById,
-    todoDone
+    todoDone,
+    createAutoTask
+    
 };

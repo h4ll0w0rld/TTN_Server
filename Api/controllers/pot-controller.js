@@ -41,7 +41,7 @@ async function delPot(req, res) {
     try {
         const { id } = req.body;
         console.log("Dealing with: ", req.body)
-        const response =  await PotService.delPot(id);
+        const response = await PotService.delPot(id);
         res.status(200).json("Pot deleted");
     } catch (err) {
         console.error('Error deleting Pot:', err);
@@ -54,7 +54,7 @@ async function delPot(req, res) {
 async function delLog(req, res) {
     try {
         const { potId, logId } = req.body;
-       
+
         const response = await PotService.delLog(potId, logId);
         res.status(200).json("Log detatched", response);
     } catch (err) {
@@ -64,12 +64,43 @@ async function delLog(req, res) {
 
 }
 
+async function updateAutoWatering(req, res) {
+    try {
+        const potId = req.params.id;
+        const { autoWateringEnabled } = req.body;
+        const res = await PotService.updateAutoWatering(potId, autoWateringEnabled)
+        res.status(200).json("updated", res);
+
+    } catch {
+        console.log("Error updating auto watering");
+        res.status(500).send('Error updating auto watering');
+    }
+
+}
+
+async function updateThreshhold(req, res) {
+    try {
+        const potId = req.params.id;
+        const { threshhold } = req.body;
+        const res = await PotService.updateThreshhold(potId, threshhold)
+        res.status(200).json("updated Threshhold", res);
+
+    } catch {
+        console.log("Error updating auto watering");
+        res.status(500).send('Error updating auto watering');
+
+    }
+
+
+}
+
 
 module.exports = {
     addPot,
     addLog,
     getPots,
     delPot,
-    delLog
+    delLog,
+    updateAutoWatering
 
 };

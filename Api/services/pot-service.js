@@ -66,6 +66,28 @@ function addLog(potId, logId) {
         });
     });
 }
+function updateAutoWatering(id, autoWatering) {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE Pot SET autoWateringEnabled = ? WHERE id = ?';
+        db.query(query, [autoWatering, id], (error, result) => {
+            if (error) return reject(error);
+            resolve(result)
+        });
+    });
+
+}
+
+function updateThreshhold(id, threshhold){
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE Pot SET waterthreshhold = ? WHERE id = ?';
+        db.query(query, [threshhold, id], (error, result) => {
+            if (error) return reject(error);
+            resolve(result)
+        });
+    });
+
+
+}
 
 
 function delLog(potId, logId) {
@@ -78,6 +100,8 @@ module.exports = {
     getPots,
     delPot,
     addLog,
-    delLog
+    delLog,
+    updateAutoWatering,
+    updateThreshhold
 
 };
