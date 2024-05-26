@@ -112,6 +112,7 @@ function updateThreshhold(id, threshhold){
 }
 
 function getHumidThreshhold(id){
+    console.log("trigger")
     return new Promise((resolve, reject) => {
         const query = 'SELECT autoWateringTodo FROM Pot WHERE id = ?';
         db.query(query, [ id], (err, results) => {
