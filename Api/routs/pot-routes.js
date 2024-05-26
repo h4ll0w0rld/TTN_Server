@@ -11,7 +11,7 @@ router.delete('/pot', authenticateToken, delPot)
 router.delete('/pot/log', authenticateToken, delLog)
 router.post('/pot/:id/auto-watering', authenticateToken, updateAutoWatering)
 router.post('/pot/:id/threshold', authenticateToken, updateThreshhold)
-router.get('/pot/threshhold', authenticateToken, getHumidThreshhold);
-router.get('pot/autoWateringEnabled', authenticateToken, autoWateringEnabled)
+router.get('/pot/:id/threshhold', authenticateToken, getHumidThreshhold);
+router.get('pot/:id/autoWateringEnabled', authenticateToken, autoWateringEnabled)
 
 module.exports = router;

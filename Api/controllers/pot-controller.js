@@ -95,8 +95,8 @@ async function updateThreshhold(req, res) {
 
 async function autoWateringEnabled(req, res) {
     try {
-        const { id } = req.body;
-       
+        
+        const id = req.params.id;
         const response = await PotService.autoWateringEnabled(id)
         res.status(200).json(response);
 
@@ -109,7 +109,7 @@ async function autoWateringEnabled(req, res) {
 
 async function getHumidThreshhold(req, res) {
     try {
-        const { id } = req.body;
+        const id = req.params.id;
        
         const response = await PotService.getHumidThreshhold(id)
         res.status(200).json(response);
