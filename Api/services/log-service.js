@@ -6,6 +6,7 @@ function addLog(headline, description, imagePath, potId) {
         const query = 'INSERT INTO logs (headline, description, image, potId) VALUES (?, ?, ?, ?)';
 
         // Execute the query
+        console.log("Pot ID", potId)
         db.query(query, [headline, description, imagePath, potId], (err, results) => {
             if (err) {
                 console.error('Error executing query:', err);
