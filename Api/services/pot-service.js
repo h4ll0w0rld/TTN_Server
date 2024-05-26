@@ -80,7 +80,7 @@ function updateAutoWatering(id, autoWatering) {
 function autoWateringEnabled(id){
     return new Promise((resolve, reject) => {
         const query = 'SELECT autoWateringEnabled FROM Pot WHERE id = ?';
-        db.query(query, [threshhold, id], (err, results) => {
+        db.query(query, [id], (err, results) => {
                 if (err) {
                     console.error('Error executing query:', err);
                     reject(err);
