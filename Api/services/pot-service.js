@@ -119,7 +119,7 @@ function getHumidThreshhold(id){
                     console.error('Error executing query:', err);
                     reject(err);
                 } else {
-                 
+                    console.log(results, "SQL RESULT")
                     resolve(results);
                 }
             });
