@@ -98,6 +98,7 @@ async function autoWateringEnabled(req, res) {
         
         const id = req.params.id;
         const response = await PotService.autoWateringEnabled(id)
+        console.log(response, "RESPONSE")
         res.status(200).json(response);
 
     } catch {
@@ -110,7 +111,7 @@ async function autoWateringEnabled(req, res) {
 async function getHumidThreshhold(req, res) {
     try {
         const id = req.params.id;
-       
+    
         const response = await PotService.getHumidThreshhold(id)
         res.status(200).json(response);
 
