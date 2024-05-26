@@ -1,7 +1,7 @@
 const express = require('express');
 const { addLog, getLog } = require('../controllers/log-controller');
 const authenticateToken = require('../middleware/jwt-middleware');
-const { upload } = require('../middleware');
+const { upload } = require('../server');
 
 
 const router = express.Router();
