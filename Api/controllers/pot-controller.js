@@ -102,8 +102,8 @@ async function autoWateringEnabled(req, res) {
         res.status(200).json(response);
 
     } catch {
-        console.log("Error updating auto watering");
-        res.status(500).send('Error updating auto watering');
+        console.log("Error getting auto watering enabled state");
+        res.status(500).send("Error getting auto watering enabled state");
 
     }
 }
