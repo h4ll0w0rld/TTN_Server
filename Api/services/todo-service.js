@@ -50,18 +50,15 @@ async function createAutoTask() {
         if (error) throw error;
 
         pots.forEach(async pot => {
-            console.log(pot, "POT")
+        
             var humidity = await HumidService.getHumid()
             const sensor = humidity[humidity.length - 1]
-            console.log(sensor.humidity, pot.waterthreshhold, "SENSOR VALUES")
+    
             if (sensor.humidity < pot.waterthreshhold) {
-
-                console.log("DATA: ", pot)
                 const headline = `${pot.name} Braucht wasser`;
                 const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
 
                 const exists = await todoExists(headline);
-                console.log("EXISTS: ", exists)
                 if (!exists) {
 
                     console.log("Creating ToDo Task")

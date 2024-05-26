@@ -93,6 +93,35 @@ async function updateThreshhold(req, res) {
     }
 }
 
+async function autoWateringEnabled(req, res) {
+    try {
+        const { id } = req.body;
+       
+        const response = await PotService.autoWateringEnabled(id)
+        res.status(200).json(response);
+
+    } catch {
+        console.log("Error updating auto watering");
+        res.status(500).send('Error updating auto watering');
+
+    }
+}
+
+async function getHumidThreshhold(req, res) {
+    try {
+        const { id } = req.body;
+       
+        const response = await PotService.getHumidThreshhold(id)
+        res.status(200).json(response);
+
+    } catch {
+        console.log("Error updating auto watering");
+        res.status(500).send('Error updating auto watering');
+
+    }
+}
+
+
 
 module.exports = {
     addPot,
@@ -101,6 +130,8 @@ module.exports = {
     delPot,
     delLog,
     updateAutoWatering,
-    updateThreshhold
+    updateThreshhold,
+    autoWateringEnabled,
+    getHumidThreshhold
 
 };

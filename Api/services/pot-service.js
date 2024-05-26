@@ -1,5 +1,5 @@
 const db = require('../config/db');
-const HumidService = require('../services/humiditiy-service');
+
 
 
 function createPot(name, description, sensor, autoWateringTodo = null) {
@@ -77,6 +77,23 @@ function updateAutoWatering(id, autoWatering) {
 
 }
 
+function autoWateringEnabled(id){
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT autoWateringEnabled FROM Pot WHERE id = ?';
+        db.query(query, [threshhold, id], (err, results) => {
+                if (err) {
+                    console.error('Error executing query:', err);
+                    reject(err);
+                } else {
+                 
+                    resolve(results);
+                }
+            });
+    });
+
+
+}
+
 function updateThreshhold(id, threshhold){
     return new Promise((resolve, reject) => {
         const query = 'UPDATE Pot SET autoWateringTodo = ? WHERE id = ?';
@@ -94,6 +111,22 @@ function updateThreshhold(id, threshhold){
 
 }
 
+function getHumidThreshhold(id){
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT autoWateringTodo FROM Pot WHERE id = ?';
+        db.query(query, [ id], (err, results) => {
+                if (err) {
+                    console.error('Error executing query:', err);
+                    reject(err);
+                } else {
+                 
+                    resolve(results);
+                }
+            });
+    });
+
+}
+
 
 function delLog(potId, logId) {
 
@@ -107,6 +140,9 @@ module.exports = {
     addLog,
     delLog,
     updateAutoWatering,
-    updateThreshhold
+    updateThreshhold,
+    autoWateringEnabled,
+    getHumidThreshhold
+
 
 };
