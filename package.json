@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "install": "^0.13.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.9.7",
+    "npm": "^10.8.0"
+  }
+}

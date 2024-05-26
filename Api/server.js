@@ -2,17 +2,31 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const TodoService = require('./services/todo-service');
+const multer = require('multer');
 require('dotenv').config();
+const path = require('path');
  
 
 const app = express();
 const port = process.env.PORT || 3334; 
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage });
 
 
 const authRoutes = require('./routs/auth-routes');
 const todoRoutes = require('./routs/todo-routes');
 const sensorRoutes = require('./routs/sensor-routes');
 const potRoutes = require('./routs/pot-routes');
+const logRoutes = require('./routs/log-routes');
 
 
 
@@ -27,7 +41,7 @@ app.use(cors());
 
 // Middleware for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(authRoutes)
+app.use(authRoutes, logRoutes)
 app.use(todoRoutes)
 app.use(sensorRoutes)
 app.use(potRoutes)
@@ -75,3 +89,8 @@ setInterval(() => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+module.exports = {
+  app,
+  upload
+};
