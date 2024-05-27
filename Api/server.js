@@ -2,9 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const TodoService = require('./services/todo-service');
-const multer = require('multer');
+
 require('dotenv').config();
-const path = require('path');
+
 
 // const path = require('');
  
@@ -12,17 +12,7 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3334; 
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
 
-const upload = multer({storage});
 
 
 
@@ -41,7 +31,7 @@ app.use(bodyParser.json());
 // Use CORS middleware
 app.use(cors());
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // Middleware for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
