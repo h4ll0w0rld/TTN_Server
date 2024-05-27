@@ -10,7 +10,7 @@ const upload = multer({ dest: './uploads/' })
 
 const router = express.Router();
 
-router.post('/log', upload.single('photos'), authenticateToken, addLog);
+router.post('/log', upload.single('profile-file'), authenticateToken, addLog);
 
 router.get('/logs/:potId',authenticateToken, getLog);
 
