@@ -23,8 +23,17 @@ const upload = multer({ storage });
 
 
 const router = express.Router();
-
-router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+router.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+    setHeaders: (res, path) => {
+      if (path.endsWith('.png')) {
+        res.setHeader('Content-Type', 'image/png');
+      } else if (path.endsWith('.jpg') || path.endsWith('.jpeg')) {
+        res.setHeader('Content-Type', 'image/jpeg');
+      }
+      // Add other content types as needed
+    }
+  }));
+//router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 router.post('/log', upload.single('image'), authenticateToken, addLog);
 
 router.get('/logs/:potId', authenticateToken, getLog);
