@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const TodoService = require('./services/todo-service');
-// const multer = require('multer');
+const multer = require('multer');
 require('dotenv').config();
 // const path = require('');
  
@@ -10,16 +10,16 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3334; 
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, './uploads/');
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + path.extname(file.originalname));
-//   }
-// });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + process.env.BASE_URL.extname(file.originalname));
+  }
+});
 
-// const upload = multer();
+const upload = multer({storage});
 
 
 const authRoutes = require('./routs/auth-routes');
