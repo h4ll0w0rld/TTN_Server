@@ -23,8 +23,7 @@ const upload = multer({ storage });
 
 
 const router = express.Router();
-router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+router.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 //router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 router.post('/log', upload.single('image'), authenticateToken, addLog);
 
