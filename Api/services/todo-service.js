@@ -53,7 +53,7 @@ async function createAutoTask() {
         
             var humidity = await HumidService.getHumid()
             const sensor = humidity[humidity.length - 1]
-    
+            console.log("Checking Pot nr", pot)
             if (sensor.humidity < pot.waterthreshhold) {
                 const headline = `${pot.name} Braucht wasser`;
                 const description = `Der Wassergehalt von Topf nr ${pot.id} ist niedrig`;
