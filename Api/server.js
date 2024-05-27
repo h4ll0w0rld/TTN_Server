@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const TodoService = require('./services/todo-service');
 const multer = require('multer');
 require('dotenv').config();
+const path = require('path');
+
 // const path = require('');
  
 
@@ -38,7 +40,7 @@ app.use(bodyParser.json());
 // Use CORS middleware
 app.use(cors());
 
-app.use('/uploads', express.static(process.env.BASE_URL.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Middleware for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
