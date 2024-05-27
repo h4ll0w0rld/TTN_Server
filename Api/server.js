@@ -22,6 +22,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 
+
 const authRoutes = require('./routs/auth-routes');
 const todoRoutes = require('./routs/todo-routes');
 const sensorRoutes = require('./routs/sensor-routes');
@@ -37,7 +38,7 @@ app.use(bodyParser.json());
 // Use CORS middleware
 app.use(cors());
 
-
+app.use('/uploads', express.static(process.env.BASE_URL.join(__dirname, 'uploads')));
 
 // Middleware for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -91,6 +92,8 @@ app.listen(port, () => {
 });
 
 module.exports = {
-  app
+  app,
+  upload
+  
  
 };
