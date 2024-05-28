@@ -18,7 +18,7 @@ async function getTypes(req, res) {
 
 
 async function addType(req, res) {
-    const { name } = req.params;
+    const { name } = req.body;
     console.log("name: ", name, "req.param: ", req.params)
     try {
         const results = await CustValService.addType(name);
@@ -30,7 +30,7 @@ async function addType(req, res) {
     }
 };
 async function setValForType(req, res) {
-    const { id, val } = req.params;
+    const { id, val } = req.body;
     try {
         const results = await CustValService.setValForType(id, val);
         
