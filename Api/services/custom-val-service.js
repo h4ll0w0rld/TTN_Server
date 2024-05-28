@@ -19,7 +19,7 @@ function getTypes() {
 function addType(name) {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO types (name) VALUES (?)';
-
+        console.log("NAME IS: ", name)
         // Execute the query
         db.query(query, [name], (err, results) => {
             if (err) {
