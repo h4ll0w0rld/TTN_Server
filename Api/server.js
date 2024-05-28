@@ -21,6 +21,7 @@ const todoRoutes = require('./routs/todo-routes');
 const sensorRoutes = require('./routs/sensor-routes');
 const potRoutes = require('./routs/pot-routes');
 const logRoutes = require('./routs/log-routes');
+const customValService = require('./routs/custom-val-routes');
 
 
 
@@ -35,10 +36,9 @@ app.use(cors());
 
 // Middleware for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(authRoutes, logRoutes)
-app.use(todoRoutes)
-app.use(sensorRoutes)
-app.use(potRoutes)
+//Importing Router
+app.use(authRoutes, logRoutes, todoRoutes, sensorRoutes, potRoutes, customValService)
+
 //TodoService.createAutoTask()
 TodoService.createAutoTask();
 setInterval(() => {
