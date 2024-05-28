@@ -19,6 +19,7 @@ async function getTypes(req, res) {
 
 async function addType(req, res) {
     const { name } = req.params;
+    console.log("name: ", name, "req.param: ", req.params)
     try {
         const results = await CustValService.addType(name);
         
