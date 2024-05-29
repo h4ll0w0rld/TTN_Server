@@ -35,7 +35,7 @@ function addType(name) {
 
 function getValByTypeId(id) {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM type_values WHERE id = ?';
+        const query = 'SELECT * FROM type_values WHERE type_id = ?';
 
         // Execute the query
         db.query(query, [id], (err, results) => {
