@@ -43,7 +43,7 @@ function getValByTypeId(id) {
                 console.error('Error executing query:', err);
                 reject(err);
             } else {
-                // console.log('Retrieved values from type_values table:', results);
+                console.log('Retrieved values from type_values table:', results);
                 resolve(results);
             }
         });
