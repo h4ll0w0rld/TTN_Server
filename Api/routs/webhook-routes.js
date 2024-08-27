@@ -1,11 +1,11 @@
 const express = require('express');
-const {getHumid } = require('../controllers/webhook-controller');
+const {addSensVal } = require('../controllers/webhook-controller');
 const authenticateToken = require('../middleware/jwt-middleware');
 
 const router = express.Router();
 
 
-router.get('/webhook', authenticateToken, getHumid);
+router.get('/webhook', authenticateToken, addSensVal);
 
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const db = require('../config/db');
 
-
+//creating a now log 
 function addLog(headline, description, imagePath, potId) {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO logs (headline, description, image, potId) VALUES (?, ?, ?, ?)';
@@ -19,7 +19,7 @@ function addLog(headline, description, imagePath, potId) {
     });
 
 }
-
+//returns every log of a given pot
 function getLogs(id) {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM logs WHERE potId = ? ORDER BY timestamp DESC';

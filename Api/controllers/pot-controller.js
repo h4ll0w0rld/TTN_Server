@@ -1,6 +1,6 @@
 const PotService = require('../services/pot-service');
 
-
+//Adding new Pot 
 async function addPot(req, res) {
     try {
         const { name, description, sensId } = req.body;
@@ -11,7 +11,7 @@ async function addPot(req, res) {
         res.status(500).send('Error fetching ToDo tasks.');
     }
 }
-
+//Adding a log to a given pot
 async function addLog(req, res) {
 
     try {
@@ -24,7 +24,7 @@ async function addLog(req, res) {
     }
 
 }
-
+//returns all pots
 async function getPots(req, res) {
     try {
         const pots = await PotService.getPots();
@@ -36,7 +36,7 @@ async function getPots(req, res) {
 
 
 }
-
+//Delete pot by id
 async function delPot(req, res) {
     try {
         const { id } = req.body;
@@ -50,7 +50,7 @@ async function delPot(req, res) {
 
 }
 
-
+//remove log from pot
 async function delLog(req, res) {
     try {
         const { potId, logId } = req.body;
@@ -64,6 +64,7 @@ async function delLog(req, res) {
 
 }
 
+//Enables or disables the automatic watering feature
 async function updateAutoWatering(req, res) {
     try {
         const potId = req.params.id;
@@ -77,7 +78,7 @@ async function updateAutoWatering(req, res) {
     }
 
 }
-
+//updates the water threshhold needed to activate automatic watering remider
 async function updateThreshhold(req, res) {
     try {
         const potId = req.params.id;
@@ -92,13 +93,13 @@ async function updateThreshhold(req, res) {
 
     }
 }
-
+//returns true or false depending if the feature is turned on or not
 async function autoWateringEnabled(req, res) {
     try {
         
         const id = req.params.id;
         const response = await PotService.autoWateringEnabled(id)
-        console.log(response, "RESPONSE")
+ 
         res.status(200).json(response);
 
     } catch {
@@ -107,7 +108,7 @@ async function autoWateringEnabled(req, res) {
 
     }
 }
-
+//returns current humidity threshhold
 async function getHumidThreshhold(req, res) {
     try {
         const id = req.params.id;

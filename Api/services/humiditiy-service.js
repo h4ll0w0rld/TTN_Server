@@ -1,5 +1,6 @@
 const db = require('../config/db');
 
+//returns all humidity values
 function getHumid() {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM HumidSens';
@@ -16,6 +17,7 @@ function getHumid() {
         });
     });
 };
+//saves humidity data 
 async function saveHumidityData(_id, _humidity, _time) {
     try {
       const query = 'INSERT INTO HumidSens (devId, humidity, Date) VALUES (?, ?, ?)';

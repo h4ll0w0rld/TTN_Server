@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 
-
+//creates new pot
 function createPot(name, description, sensor, autoWateringTodo = null) {
     return new Promise((resolve, reject) => {
 
@@ -18,7 +18,7 @@ function createPot(name, description, sensor, autoWateringTodo = null) {
     });
 
 }
-
+//returns all pots
 function getPots() {
     return new Promise((resolve, reject) => {
 
@@ -34,9 +34,9 @@ function getPots() {
         });
     });
 }
-
+//delets a pot by id
 function delPot(potId) {
-    console.log("POT ID = ", potId)
+  
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM Pot WHERE id = ?';
         db.query(query, [potId], (err, results) => {
@@ -51,6 +51,7 @@ function delPot(potId) {
     });
 }
 
+//adding a log to a pot id using pot and log uuids 
 function addLog(potId, logId) {
 
     return new Promise((resolve, reject) => {
@@ -66,6 +67,7 @@ function addLog(potId, logId) {
         });
     });
 }
+//Enables or disables auto watering function
 function updateAutoWatering(id, autoWatering) {
     return new Promise((resolve, reject) => {
         const query = 'UPDATE Pot SET autoWateringEnabled = ? WHERE id = ?';
@@ -77,6 +79,7 @@ function updateAutoWatering(id, autoWatering) {
 
 }
 
+//returns true or false depending on current state 
 function autoWateringEnabled(id){
     return new Promise((resolve, reject) => {
         const query = 'SELECT autoWateringEnabled FROM Pot WHERE id = ?';
@@ -93,7 +96,7 @@ function autoWateringEnabled(id){
 
 
 }
-
+//update humidity threshhold for auto watering 
 function updateThreshhold(id, threshhold){
     return new Promise((resolve, reject) => {
         const query = 'UPDATE Pot SET autoWateringTodo = ? WHERE id = ?';
@@ -110,9 +113,9 @@ function updateThreshhold(id, threshhold){
 
 
 }
-
+//returns current humidity threshhold
 function getHumidThreshhold(id){
-    console.log("trigger")
+   
     return new Promise((resolve, reject) => {
         const query = 'SELECT autoWateringTodo FROM Pot WHERE id = ?';
         db.query(query, [ id], (err, results) => {

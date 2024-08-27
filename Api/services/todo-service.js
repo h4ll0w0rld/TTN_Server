@@ -2,8 +2,10 @@ const e = require('express');
 const db = require('../config/db');
 const HumidService = require('../services/humiditiy-service');
 
+
+//adds a new todo task
 function createTodo({ headline, description, isDone = false }) {
-    console.log("Getting", headline, description, isDone)
+   
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO todos (headline, description, isDone) VALUES (?, ?, ?)';
         db.query(query, [headline, description, isDone], (err, result) => {
@@ -13,6 +15,7 @@ function createTodo({ headline, description, isDone = false }) {
     });
 };
 
+//returns every todo
 function getTodos() {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM todos';
@@ -23,6 +26,7 @@ function getTodos() {
     });
 };
 
+//deleteing todo by id
 function deleteTodoById(id) {
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM todos WHERE id = ?';
@@ -33,7 +37,7 @@ function deleteTodoById(id) {
     });
 };
 
-
+//mark todo as done
 function todoDone(id) {
     return new Promise((resolve, reject) => {
         const query = 'UPDATE todos SET isDone = true WHERE id = ?';
@@ -44,24 +48,24 @@ function todoDone(id) {
     });
 }
 
+//creating automaticly new todo task if humidity drops under a certain threshhold
 async function createAutoTask() {
 
     db.query('SELECT * FROM Pot WHERE autoWateringEnabled = TRUE', (error, pots) => {
         if (error) throw error;
 
-        pots.forEach(async pot => {
+        pots.forEach(async pot => { //iterating every pot
         
-            var humidity = await HumidService.getHumid()
-            const sensor = humidity[humidity.length - 1]
-            console.log("Checking Pot nr", pot)
-            console.log("SENSOR: ", sensor)
-            if (sensor.humidity < pot.autoWateringTodo) {
-                const headline = `${pot.name} braucht wasser`;
+            var humidity = await HumidService.getHumid()  //get humidity 
+            const sensor = humidity[humidity.length - 1] //only use newest value 
+          
+            if (sensor.humidity < pot.autoWateringTodo) {   //check if current humidity is lower than the threshhold
+                //creating new todo task
+                const headline = `${pot.name} braucht wasser`;  
                 const description = `Der Wassergehalt von Topf ${pot.id} ist zu gering`;
-
                 const exists = await todoExists(headline);
-                console.log(exists)
-                if (!exists) {
+            
+                if (!exists) {  //checks if todo is already created
 
                     console.log("Creating ToDo Task")
                     createTodo({ headline, description });
@@ -73,6 +77,7 @@ async function createAutoTask() {
 
 }
 
+//checks if a given todo exists already
 async function todoExists(headline) {
     return new Promise((resolve, reject) => {
         db.query('SELECT * FROM todos WHERE headline = ?', [headline], (err, res) => {

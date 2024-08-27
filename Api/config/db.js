@@ -2,6 +2,7 @@ const mysql = require('mysql2');
 
 require('dotenv').config();
 
+//Database Params
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -12,6 +13,7 @@ const db = mysql.createConnection({
   queueLimit: 0
 });
 
+//Init connection
 db.connect(err => {
   if (err) throw err;
   console.log('Connected to MySQL database!');

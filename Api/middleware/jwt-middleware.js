@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+//Authentification of the given JWT key
 function authenticateToken(req, res, next) {
   const token = req.headers['authorization'];
   if (!token) {

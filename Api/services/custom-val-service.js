@@ -1,43 +1,45 @@
 const db = require('../config/db');
 
+//returns every known type
 function getTypes() {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM types';
 
-        // Execute the query
         db.query(query, (err, results) => {
             if (err) {
                 console.error('Error executing query:', err);
                 reject(err);
             } else {
-                //console.log('Retrieved values from HumidSens table:', results);
+                
                 resolve(results);
             }
         });
     });
 };
+
+//adds a new datatype 
 function addType(name) {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO types (name) VALUES (?)';
         console.log("NAME IS: ", name)
-        // Execute the query
+   
         db.query(query, [name], (err, results) => {
             if (err) {
                 console.error('Error executing query:', err);
                 reject(err);
             } else {
-                //console.log('Retrieved values from HumidSens table:', results);
+              
                 resolve(results);
             }
         });
     });
 }
 
+//returns a value for a given data type using uuid 
 function getValByTypeId(id) {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM type_values WHERE type_id = ?';
-
-        // Execute the query
+       
         db.query(query, [id], (err, results) => {
             if (err) {
                 console.error('Error executing query:', err);
@@ -50,18 +52,17 @@ function getValByTypeId(id) {
     });
 
 }
-
+//add value to data type
 function setValForType(id, val) {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO type_values (type_id, value) VALUES (?, ?)';
 
-        // Execute the query
         db.query(query, [id, val], (err, results) => {
             if (err) {
                 console.error('Error executing query:', err);
                 reject(err);
             } else {
-                //console.log('Retrieved values from HumidSens table:', results);
+             
                 resolve(results);
             }
         });

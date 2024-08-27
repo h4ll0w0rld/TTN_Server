@@ -1,5 +1,6 @@
 const HumidService = require('../services/humiditiy-service');
 
+//returns all available humidity data
 async function getHumid(req, res){
     try {
         const response = await HumidService.getHumid();

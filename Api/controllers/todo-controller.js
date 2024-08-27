@@ -1,5 +1,6 @@
 const TodoService = require('../services/todo-service');
 
+//Add ToDo Task
 async function createTodo(req, res) {
     try {
         const { headline, description, isDone } = req.body;
@@ -10,7 +11,7 @@ async function createTodo(req, res) {
         res.status(500).send('Error creating ToDo task.');
     }
 };
-
+//Returns every ToDo Task
 async function getTodos(req, res) {
     try {
         const todos = await TodoService.getTodos();
@@ -20,7 +21,7 @@ async function getTodos(req, res) {
         res.status(500).send('Error fetching ToDo tasks.');
     }
 };
-
+//Delete ToDo task by id
 async function deleteTodo(req, res) {
     try {
         const { id } = req.body;
@@ -32,6 +33,7 @@ async function deleteTodo(req, res) {
     }
 };
 
+//mark Todo task as done
 async function todoDone(req, res) {
     try {
         const { id } = req.body

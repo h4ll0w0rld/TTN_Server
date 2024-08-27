@@ -4,7 +4,7 @@ const authenticateToken = require('../middleware/jwt-middleware');
 const path = require('path');
 const multer = require('multer');
 
-
+//init multer to save images to file system
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/');
@@ -16,15 +16,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
-
-//const upload = multer({ dest: './uploads/' })
-
-
-
 const router = express.Router();
-router.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-//router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+router.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));  //linking multer to router
 router.post('/log', upload.single('image'), authenticateToken, addLog);
 
 router.get('/logs/:potId', authenticateToken, getLog);
